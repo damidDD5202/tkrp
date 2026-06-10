@@ -1,0 +1,49 @@
+@startuml fig3_8_seq_booking_ea_style
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam sequence {
+  ArrowColor #000000
+  LifeLineBorderColor #000000
+  LifeLineBackgroundColor #FFFFFF
+  ParticipantBorderColor #000000
+  ParticipantBackgroundColor #FFFFFF
+  ActorBorderColor #000000
+  ActorBackgroundColor #FFFFFF
+  BoxBorderColor #000000
+  GroupBorderColor #000000
+  GroupBackgroundColor #FFFFFF
+}
+
+title Рисунок 3.8 – Бронирование и управление бронями в кабинете\n(функции 1–3, 8; POST /api/tariff/calc, /api/me/bookings)
+
+actor "Пользователь" as U
+participant "Map UI (cabinet.js)" as UI
+participant "Backend API (server.py)" as API
+database "SQLite" as DB
+
+U -> UI : Выбор места,\nчасы, госномер
+UI -> API : POST /api/tariff/calc\n(функция 2)
+API --> UI : price_rub
+UI -> API : POST /api/me/bookings\n(создание брони)
+activate API
+API -> API : require_login
+API -> API : check bookable(s)\n(override+booking+detect)
+
+API -> DB : INSERT bookings
+DB --> API : Новая запись (id)
+
+API --> UI : 201 Created\nJSON booking
+deactivate API
+
+UI -> UI : Обновить список броней\nи перерисовать карту
+
+opt Управление бронью
+  U -> UI : Отмена / +1 ч / Оплата
+  UI -> API : DELETE или PATCH\nили POST .../pay
+  API --> UI : ok (функции 1, 3, 8)
+end
+
+@enduml
+

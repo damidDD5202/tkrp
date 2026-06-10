@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmlns:uml="http://schema.omg.org/spec/UML/2.0" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmi:version="2.1">
+  <uml:Model xmi:type="uml:Model" xmi:id="id_1" name="02 Association Specification">
+    <uml:packagedElement xmi:type="uml:Package" xmi:id="id_2" name="02 Association Specification">
+      <uml:packagedElement xmi:type="uml:Class" xmi:id="id_3" name="Booking">
+        <uml:ownedAttribute xmi:type="uml:Property" xmi:id="id_4" name="booking_id" visibility="public" type="int"/>
+        <uml:ownedAttribute xmi:type="uml:Property" xmi:id="id_5" name="slot_id" visibility="public" type="string"/>
+        <uml:ownedAttribute xmi:type="uml:Property" xmi:id="id_6" name="start_ts" visibility="public" type="datetime"/>
+        <uml:ownedAttribute xmi:type="uml:Property" xmi:id="id_7" name="end_ts" visibility="public" type="datetime"/>
+      </uml:packagedElement>
+      <uml:packagedElement xmi:type="uml:Class" xmi:id="id_8" name="Payment">
+        <uml:ownedAttribute xmi:type="uml:Property" xmi:id="id_9" name="payment_id" visibility="public" type="int"/>
+        <uml:ownedAttribute xmi:type="uml:Property" xmi:id="id_10" name="amount_rub" visibility="public" type="float"/>
+        <uml:ownedAttribute xmi:type="uml:Property" xmi:id="id_11" name="receipt_id" visibility="public" type="string"/>
+      </uml:packagedElement>
+      <uml:packagedElement xmi:type="uml:Class" xmi:id="id_12" name="ParkingSlot">
+        <uml:ownedAttribute xmi:type="uml:Property" xmi:id="id_13" name="slot_id" visibility="public" type="string"/>
+        <uml:ownedAttribute xmi:type="uml:Property" xmi:id="id_14" name="current_status" visibility="public" type="string"/>
+      </uml:packagedElement>
+      <uml:packagedElement xmi:type="uml:Class" xmi:id="id_15" name="Observation">
+        <uml:ownedAttribute xmi:type="uml:Property" xmi:id="id_16" name="observation_id" visibility="public" type="int"/>
+        <uml:ownedAttribute xmi:type="uml:Property" xmi:id="id_17" name="slots_json" visibility="public" type="string"/>
+        <uml:ownedAttribute xmi:type="uml:Property" xmi:id="id_18" name="ts" visibility="public" type="datetime"/>
+      </uml:packagedElement>
+      <uml:packagedElement xmi:type="uml:Association" xmi:id="id_19" name="has_payments" memberEnd="id_20 id_21">
+        <uml:ownedEnd xmi:type="uml:Property" xmi:id="id_20" name="booking" visibility="public" aggregation="none" association="id_19" type="id_3">
+          <uml:lowerValue xmi:type="uml:LiteralInteger" xmi:id="id_22" value="1"/>
+          <uml:upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="id_23" value="1"/>
+        </uml:ownedEnd>
+        <uml:ownedEnd xmi:type="uml:Property" xmi:id="id_21" name="payment" visibility="public" aggregation="none" association="id_19" type="id_8">
+          <uml:lowerValue xmi:type="uml:LiteralInteger" xmi:id="id_24" value="0"/>
+          <uml:upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="id_25" value="*"/>
+        </uml:ownedEnd>
+      </uml:packagedElement>
+      <uml:packagedElement xmi:type="uml:Association" xmi:id="id_26" name="for_slot" memberEnd="id_27 id_28">
+        <uml:ownedEnd xmi:type="uml:Property" xmi:id="id_27" name="booking" visibility="public" aggregation="none" association="id_26" type="id_3">
+          <uml:lowerValue xmi:type="uml:LiteralInteger" xmi:id="id_29" value="0"/>
+          <uml:upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="id_30" value="*"/>
+        </uml:ownedEnd>
+        <uml:ownedEnd xmi:type="uml:Property" xmi:id="id_28" name="slot" visibility="public" aggregation="none" association="id_26" type="id_12">
+          <uml:lowerValue xmi:type="uml:LiteralInteger" xmi:id="id_31" value="1"/>
+          <uml:upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="id_32" value="1"/>
+        </uml:ownedEnd>
+      </uml:packagedElement>
+      <uml:packagedElement xmi:type="uml:Association" xmi:id="id_33" name="detects" memberEnd="id_34 id_35">
+        <uml:ownedEnd xmi:type="uml:Property" xmi:id="id_34" name="observation" visibility="public" aggregation="none" association="id_33" type="id_15">
+          <uml:lowerValue xmi:type="uml:LiteralInteger" xmi:id="id_36" value="1"/>
+          <uml:upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="id_37" value="1"/>
+        </uml:ownedEnd>
+        <uml:ownedEnd xmi:type="uml:Property" xmi:id="id_35" name="slot" visibility="public" aggregation="none" association="id_33" type="id_12">
+          <uml:lowerValue xmi:type="uml:LiteralInteger" xmi:id="id_38" value="0"/>
+          <uml:upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="id_39" value="*"/>
+        </uml:ownedEnd>
+      </uml:packagedElement>
+    </uml:packagedElement>
+  </uml:Model>
+</xmi:XMI>

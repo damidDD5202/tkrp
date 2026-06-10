@@ -1,0 +1,135 @@
+@startuml fig1_domain_class
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontName Arial
+title UML Class Diagram: Parking Eye Domain
+
+enum Role {
+  user
+  admin
+}
+
+enum BookingStatus {
+  active
+  cancelled
+  completed
+}
+
+enum SlotVisualStatus {
+  slot_free
+  slot_occupied
+}
+
+enum PaymentStatus {
+  paid
+  refunded
+}
+
+class User {
+  +user_id: int
+  +username: string
+  +password_hash: string
+  +display_name: string
+  +role: Role
+  +active: bool
+  +block_reason: string
+  +created_ts: datetime
+}
+
+class AuthSession {
+  +session_id: int
+  +token_hash: string
+  +user_id: int
+  +created_ts: datetime
+  +expires_ts: datetime
+}
+
+class Booking {
+  +booking_id: int
+  +user_id: int
+  +slot_id: string
+  +plate: string
+  +start_ts: datetime
+  +end_ts: datetime
+  +status: BookingStatus
+  +note: string
+  +created_ts: datetime
+}
+
+class Payment {
+  +payment_id: int
+  +user_id: int
+  +booking_id: int
+  +amount_rub: float
+  +status: PaymentStatus
+  +receipt_id: string
+  +created_ts: datetime
+}
+
+class ParkingSlot {
+  +slot_id: string
+  +label: string
+  +current_status: SlotVisualStatus
+  +points_norm: float[][]
+  +confidence: float
+}
+
+class SlotOverride {
+  +slot_id: string
+  +status: string
+  +note: string
+  +updated_ts: datetime
+}
+
+class Observation {
+  +observation_id: int
+  +ts: datetime
+  +dt_ms: int
+  +total: int
+  +free: int
+  +occupied: int
+  +slots_json: string
+}
+
+class Snapshot {
+  +snapshot_id: int
+  +ts: datetime
+  +event_id: int
+  +name: string
+  +data: blob
+}
+
+class TariffSettings {
+  +hour_rub: float
+  +currency: string
+}
+
+class YoloModel {
+  +model_id: string
+  +weights_path: string
+  +conf_threshold: float
+  +is_active: bool
+}
+
+class TrafficIndicator {
+  +level: string
+  +free: int
+  +occupied: int
+  +total: int
+}
+
+User "1" -- "0..*" AuthSession : opens >
+User "1" -- "0..*" Booking : creates >
+User "1" -- "0..*" Payment : pays >
+Booking "0..*" -- "1" User : belongs_to >
+Booking "0..*" -- "1" ParkingSlot : reserves >
+Booking "1" -- "0..*" Payment : paid_by >
+SlotOverride "0..1" -- "1" ParkingSlot : overrides >
+YoloModel ..> Observation : infers >
+Observation ..> ParkingSlot : describes >
+Observation ..> TrafficIndicator : derives >
+Snapshot ..> Observation : stores_frame_of >
+TariffSettings ..> Booking : prices >
+TariffSettings ..> Payment : calculates >
+
+@enduml

@@ -1,0 +1,48 @@
+@startuml fig5_2_components_parking
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam packageBackgroundColor #FFF2CC
+skinparam packageBorderColor #D6B656
+skinparam componentBackgroundColor #E1D5E7
+skinparam componentBorderColor #9673A6
+skinparam databaseBackgroundColor #DAE8FC
+skinparam databaseBorderColor #6C8EBF
+
+title Рисунок 5.2 – Диаграмма компонентов (Parking Eye)
+
+actor "Клиент\n(пользователь)" as User
+actor "Администратор" as Admin
+
+package "Сервер (Компонент E) — FastAPI" {
+  component "REST API" as REST
+  component "Middleware\nauth / roles" as MW
+  component "Модуль карты\nи мониторинга (A)" as ModA
+  component "Модуль\nбронирования (B)" as ModB
+  component "Модуль\nадминистрирования (C)" as ModC
+  component "Слой доступа к БД\n_db(), _db_lock" as DAL
+}
+
+database "SQLite parking.db\nbookings · slot_overrides · observations" as DB
+
+User --> REST : HTTP/HTTPS\nGUI: кабинет, карта
+Admin --> REST : HTTP/HTTPS\nGUI: админ-панель
+
+REST --> MW
+MW --> ModA
+MW --> ModB
+MW --> ModC
+ModA --> DAL
+ModB --> DAL
+ModC --> DAL
+
+' Выравнивание БД по центру под DAL (скрытые связи только для layout)
+ModA -[hidden]right- ModB
+ModB -[hidden]right- ModC
+ModB -[hidden]down- DAL
+DAL -[hidden]down- DB
+
+DAL --> DB
+
+@enduml

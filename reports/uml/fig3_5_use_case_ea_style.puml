@@ -1,0 +1,120 @@
+@startuml fig3_5_use_case_ea_style
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 9
+skinparam nodesep 12
+skinparam ranksep 18
+skinparam ArrowColor #000000
+skinparam actorBorderColor #000000
+skinparam usecaseBorderColor #000000
+skinparam rectangleBorderColor #000000
+
+title Рисунок 3.5 – Диаграмма вариантов использования подсистемы\n«Отображение свободных и занятых мест»
+
+left to right direction
+
+actor "Пользователь\n(авторизованный)" as User
+actor "Администратор" as Admin
+
+rectangle "Подсистема «Отображение свободных и занятых мест»\nИС «Умная парковка»" {
+
+  usecase "UC1. Отмена брони" as UC1
+  usecase "UC2. Тарифный\nкалькулятор" as UC2
+  usecase "UC3. Продление\nвремени парковки" as UC3
+  usecase "UC4. Уведомление\nоб истечении времени" as UC4
+  usecase "UC5. Личный кабинет,\nкарта мест и «светофор»" as UC5
+  usecase "UC6. Смена пароля" as UC6
+  usecase "UC7. История\nпоездок" as UC7
+  usecase "UC8. Оплата и чек" as UC8
+
+  usecase "UC9. Панель\nадминистратора" as UC9
+  usecase "UC10. Управление\nпользователями" as UC10
+  usecase "UC11. Блокировка\nаккаунта" as UC11
+  usecase "UC12. Управление\nбронями (админ)" as UC12
+  usecase "UC13. Ручной\nстатус места" as UC13
+  usecase "UC14. Аналитика\nзагрузки" as UC14
+  usecase "UC15. Финансовая\nаналитика" as UC15
+
+  usecase "UC0. Авторизация" as UC0
+}
+
+' Пользовательский блок: 4 + центр UC5 + 3
+UC1 -[hidden]right- UC2
+UC2 -[hidden]right- UC3
+UC3 -[hidden]right- UC4
+UC1 -[hidden]down- UC6
+UC2 -[hidden]down- UC5
+UC3 -[hidden]down- UC5
+UC4 -[hidden]down- UC5
+UC6 -[hidden]right- UC7
+UC7 -[hidden]right- UC8
+
+' Админ-блок справа от UC8: UC9 + сетка 2×3
+UC8 -[hidden]right- UC9
+UC9 -[hidden]down- UC10
+UC10 -[hidden]right- UC11
+UC11 -[hidden]right- UC12
+UC10 -[hidden]down- UC13
+UC13 -[hidden]right- UC14
+UC14 -[hidden]right- UC15
+
+' Авторизация — внизу по центру
+UC5 -[hidden]down- UC0
+UC9 -[hidden]down- UC0
+
+' Администратор выше (скрытые связи только для позиции актора — стрелки к UC13–15 короче)
+Admin -[hidden]right- UC9
+Admin -[hidden]right- UC10
+Admin -[hidden]right- UC11
+Admin -[hidden]right- UC12
+
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+User --> UC5
+User --> UC6
+User --> UC7
+User --> UC8
+
+Admin --> UC9
+Admin --> UC10
+Admin --> UC11
+Admin --> UC12
+Admin -up-> UC13
+Admin -up-> UC14
+Admin -up-> UC15
+
+UC1 ..> UC5 : <<extend>>
+UC2 ..> UC5 : <<extend>>
+UC3 ..> UC5 : <<extend>>
+UC4 ..> UC5 : <<extend>>
+UC6 ..> UC5 : <<extend>>
+UC7 ..> UC5 : <<extend>>
+UC8 ..> UC5 : <<extend>>
+
+UC10 ..> UC9 : <<extend>>
+UC11 ..> UC9 : <<extend>>
+UC12 ..> UC9 : <<extend>>
+UC13 ..> UC9 : <<extend>>
+UC14 ..> UC9 : <<extend>>
+UC15 ..> UC9 : <<extend>>
+
+UC1 ..> UC0 : <<include>>
+UC2 ..> UC0 : <<include>>
+UC3 ..> UC0 : <<include>>
+UC4 ..> UC0 : <<include>>
+UC5 ..> UC0 : <<include>>
+UC6 ..> UC0 : <<include>>
+UC7 ..> UC0 : <<include>>
+UC8 ..> UC0 : <<include>>
+UC9 ..> UC0 : <<include>>
+UC10 ..> UC0 : <<include>>
+UC11 ..> UC0 : <<include>>
+UC12 ..> UC0 : <<include>>
+UC13 ..> UC0 : <<include>>
+UC14 ..> UC0 : <<include>>
+UC15 ..> UC0 : <<include>>
+
+@enduml

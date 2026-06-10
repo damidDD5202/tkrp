@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Рис. 2.4 — Главная (полная страница)</title>
+  <link rel="stylesheet" href="wireframe-common.css" />
+  <style>
+    .dash-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .dash-card {
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #e2e6ed;
+      background: #ffffff;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+    .dash-card:hover { border-color: #93c5fd; }
+    .dash-card h2 { font-size: 16px; margin-bottom: 6px; }
+    .dash-card p { font-size: 12px; color: #64748b; }
+    .dash-badge {
+      display: inline-block; margin-top: 10px; padding: 3px 10px;
+      border-radius: 6px; font-size: 11px;
+      background: rgba(32,213,107,.2); color: #20d56b;
+    }
+    .dash-wide { grid-column: 1 / -1; }
+    .stats { display: flex; gap: 28px; margin: 14px 0; }
+    .stats b { font-size: 28px; display: block; }
+    .stats span { font-size: 11px; color: #64748b; }
+    .g { color: #20d56b; }
+    .r { color: #ff4d4d; }
+    .traffic { display: flex; gap: 8px; margin-bottom: 8px; }
+    .bulb { width: 18px; height: 18px; border-radius: 50%; border: 1px solid #666; }
+    .bulb.g.on { background: #3c3; box-shadow: 0 0 8px #3c3; }
+    .quick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  </style>
+</head>
+<body class="wf-page">
+  <div class="wf-frame">
+    <aside class="wf-sidebar">
+      <div class="wf-brand"><div class="wf-brand-mark">PE</div><div class="wf-brand-text">Parking Eye</div></div>
+      <nav class="wf-nav">
+        <a class="active" href="fig2_4_dashboard.html"><span class="wf-nav-icon">⌂</span> Главная</a>
+        <a href="fig2_1_monitor.html"><span class="wf-nav-icon">▣</span> Мониторинг</a>
+        <a href="fig2_2_cabinet.html"><span class="wf-nav-icon">▤</span> Кабинет</a>
+        <a href="fig2_3_admin.html"><span class="wf-nav-icon">⚙</span> Админ</a>
+      </nav>
+      <div class="wf-user"><strong>Иван</strong><span>user · ivan</span></div>
+    </aside>
+    <div class="wf-main">
+      <header class="wf-header">
+        <h1>Добро пожаловать, Иван</h1>
+        <p>Умная парковка · Parking Eye</p>
+      </header>
+      <div class="wf-content">
+        <div class="dash-grid">
+          <a class="dash-card" href="fig2_1_monitor.html">
+            <h2>📹 Мониторинг парковки</h2>
+            <p>Камера, overlay слотов, детекция YOLO</p>
+            <span class="dash-badge">Live</span>
+          </a>
+          <a class="dash-card" href="fig2_2_cabinet.html">
+            <h2>🅿 Личный кабинет</h2>
+            <p>Карта мест, бронирование</p>
+            <span class="dash-badge">1 активная бронь</span>
+          </a>
+
+          <section class="dash-card dash-wide wf-highlight">
+            <h2>Парковка сейчас</h2>
+            <p class="wf-muted">/api/me/overview → parking.traffic</p>
+            <div class="traffic"><div class="bulb"></div><div class="bulb"></div><div class="bulb g on"></div></div>
+            <div class="stats">
+              <div><b class="g">5</b><span>свободно</span></div>
+              <div><b class="r">3</b><span>занято</span></div>
+              <div><b>8</b><span>всего мест</span></div>
+            </div>
+            <p class="wf-muted">Обновлено 2 мин назад</p>
+          </section>
+
+          <section class="dash-card">
+            <h2>Ближайшая бронь</h2>
+            <p><strong style="font-size:18px">slot_4</strong></p>
+            <p class="wf-muted">до 18:30 · 26 мая</p>
+            <span class="wf-btn" style="margin-top:10px">Все брони →</span>
+          </section>
+
+          <section class="dash-card">
+            <h2>Быстрые ссылки</h2>
+            <div class="quick">
+              <span class="wf-btn">Источник (камера)</span>
+              <span class="wf-btn">Клиент (поток)</span>
+              <span class="wf-btn">Админ-панель</span>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="wf-caption">Рисунок 2.4 – Главный экран веб-приложения «Parking Eye» (полный экран, dashboard.html)</p>
+</body>
+</html>

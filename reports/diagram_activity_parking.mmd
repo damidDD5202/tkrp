@@ -1,0 +1,64 @@
+%% Рис. 1.1 — для draw.io: Arrange → Insert → Advanced → Mermaid
+%% или https://mermaid.live — Export PNG/SVG
+
+flowchart TB
+  start(("Старт"))
+
+  load["Загрузка данных подсистемы:<br/>слоты с мониторинга, активные брони,<br/>ручные статусы slot_overrides"]
+  check_ok{"Данные загружены<br/>корректно?"}
+  err["Сообщение об ошибке,<br/>повтор запроса к API"]
+  show["Отображение на карте мест<br/>и в сводке: статусы слотов,<br/>индикатор загрузки"]
+
+  scenario{"Сценарий"}
+
+  subgraph traffic[" "]
+    direction TB
+    t1["Показать индикатор загрузки (светофор)"]
+    t2["Рассчитать долю свободных мест p = free/total·100"]
+    t3["Классифицировать: зелёный / жёлтый / красный"]
+  end
+
+  subgraph map[" "]
+    direction TB
+    m1["Показать карту мест и статусы"]
+    m2{"Действия пользователя?"}
+    m_view["Просмотр"]
+    m_pick["Выбор места для бронирования"]
+    m_check["Проверка bookable(s)"]
+  end
+
+  subgraph admin[" "]
+    direction TB
+    a1["Карта мест (админ)"]
+    a2{"Роль: администратор?"}
+    a_crud["Ручной статус: закрыто / ремонт / резерв"]
+    a_save["Сохранение в БД"]
+    a_skip["Только просмотр"]
+  end
+
+  subgraph summary[" "]
+    direction TB
+    s1["Агрегация N по state"]
+    s2["Вывод сводки"]
+  end
+
+  update["Обновление карты и сводки"]
+  cont{"Продолжить работу?"}
+  endnode(("Завершение"))
+
+  start --> load --> check_ok
+  check_ok -->|нет| err --> load
+  check_ok -->|да| show --> scenario
+
+  scenario -->|индикатор| t1 --> t2 --> t3 --> update
+  scenario -->|карта| m1 --> m2
+  m2 -->|просмотр| m_view --> update
+  m2 -->|бронь| m_pick --> m_check --> update
+  scenario -->|ручные статусы| a1 --> a2
+  a2 -->|да| a_crud --> a_save --> update
+  a2 -->|нет| a_skip --> update
+  scenario -->|сводка| s1 --> s2 --> update
+
+  update --> cont
+  cont -->|да| scenario
+  cont -->|нет| endnode

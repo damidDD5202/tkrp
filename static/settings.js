@@ -1,0 +1,756 @@
+/**
+ * Theme (dark/light) + i18n (ru/en). Load first in <head>.
+ */
+/** Bump when JS/HTML changes — appended as ?pev= on script URLs. */
+window.__PE_ASSET_V = "20260518l";
+
+(function bootSettings() {
+  const theme = localStorage.getItem("pe_theme") || "dark";
+  const lang = localStorage.getItem("pe_lang") || "ru";
+  const html = document.documentElement;
+  html.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+  html.setAttribute("lang", lang === "en" ? "en" : "ru");
+  if (localStorage.getItem("pe_a11y") === "1") html.setAttribute("data-a11y", "large");
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", theme === "light" ? "#f0f1f5" : "#08080c");
+})();
+
+const I18n = {
+  lang: localStorage.getItem("pe_lang") || "ru",
+  theme: localStorage.getItem("pe_theme") || "dark",
+  a11yLarge: localStorage.getItem("pe_a11y") === "1",
+
+  dict: {
+    ru: {
+      "app.name": "Parking Eye",
+      "nav.dashboard": "Главная",
+      "nav.monitor": "Мониторинг",
+      "nav.cabinet": "Кабинет",
+      "nav.admin": "Админ",
+      "nav.monitor_short": "Монитор",
+      "role.admin": "Администратор",
+      "role.user": "Пользователь",
+      "common.logout": "Выйти",
+      "common.show_password": "Показать",
+      "common.hide_password": "Скрыть",
+      "common.show_password_aria": "Показать пароль",
+      "common.hide_password_aria": "Скрыть пароль",
+      "common.loading": "Загрузка…",
+      "common.yes": "да",
+      "common.no": "нет",
+      "common.cancel": "Отменить",
+      "common.empty": "Пусто.",
+      "prefs.theme": "Тема",
+      "prefs.language": "Язык",
+      "prefs.theme_dark": "Тёмная",
+      "prefs.theme_light": "Светлая",
+      "prefs.lang_ru": "RU",
+      "prefs.lang_en": "EN",
+      "bc.label": "Хлебные крошки",
+      "nav.aria": "Навигация",
+      "nav.sections": "Разделы",
+      "title.dashboard": "Главная — Parking Eye",
+      "title.monitor": "Мониторинг — Parking Eye",
+      "title.cabinet": "Кабинет — Parking Eye",
+      "title.admin": "Админ — Parking Eye",
+      "title.login": "Вход — Parking Eye",
+      "title.register": "Регистрация — Parking Eye",
+      "auth.login_title": "Вход в аккаунт",
+      "auth.login_sub": "Умный мониторинг парковки и бронирование мест",
+      "auth.register_title": "Создать аккаунт",
+      "auth.register_sub": "После регистрации вы сразу попадёте в приложение",
+      "auth.username": "Email или логин",
+      "auth.email": "Email",
+      "auth.family_invite": "Код семейного аккаунта",
+      "auth.family_invite_ph": "Необязательно — если вас пригласили",
+      "auth.family_invite_hint": "Оставьте пустым, чтобы создать новый семейный аккаунт. Или введите код от владельца семьи.",
+      "auth.password": "Пароль",
+      "auth.password2": "Повторите пароль",
+      "auth.name": "Имя",
+      "auth.name_ph": "Как к вам обращаться",
+      "auth.login_btn": "Войти",
+      "auth.register_btn": "Зарегистрироваться",
+      "auth.no_account": "Нет аккаунта?",
+      "auth.register_link": "Зарегистрироваться",
+      "auth.has_account": "Уже есть аккаунт?",
+      "auth.login_link": "Войти",
+      "auth.username_hint": "Email (ivan@mail.ru) или логин: латиница, цифры и _, от 3 символов",
+      "err.invalid_family_invite": "Код приглашения: 6–12 символов (латиница и цифры)",
+      "err.family_invite_not_found": "Код семейного аккаунта не найден",
+      "dash.welcome": "Добро пожаловать",
+      "dash.lead": "{name}, выберите раздел или начните с мониторинга парковки.",
+      "dash.monitor": "Мониторинг",
+      "dash.monitor_desc": "Камера, детекция мест, режим клиента",
+      "dash.cabinet": "Кабинет",
+      "dash.cabinet_desc": "Бронирование парковочных мест",
+      "dash.parking_now": "Парковка сейчас",
+      "dash.next_booking": "Ближайшая бронь",
+      "dash.quick_links": "Быстрые ссылки",
+      "dash.all_bookings": "Все брони →",
+      "dash.no_bookings": "Нет активных броней.",
+      "dash.until": "до",
+      "dash.free": "свободно",
+      "dash.occupied": "занято",
+      "dash.total": "всего",
+      "dash.updated": "Обновлено",
+      "dash.no_camera": "Пока нет данных с камеры. Откройте мониторинг и сделайте снимок.",
+      "dash.load_fail": "Не удалось загрузить сводку.",
+      "dash.active_n": "{n} активн.",
+      "dash.link_source": "Источник (камера)",
+      "dash.link_client": "Клиент (просмотр)",
+      "dash.link_admin": "Админ-панель",
+      "dash.just_now": "только что",
+      "dash.min_ago": "{n} мин назад",
+      "dash.h_ago": "{n} ч назад",
+      "monitor.title": "Мониторинг парковки",
+      "monitor.lead": "Детекция мест в реальном времени: снимок с камеры или поток для клиентов.",
+      "monitor.mode_aria": "Режим просмотра",
+      "monitor.mode_source": "Источник",
+      "monitor.mode_client": "Клиент",
+      "monitor.stat_free": "Свободно",
+      "monitor.stat_busy": "Занято",
+      "monitor.stat_total": "Всего мест",
+      "monitor.actions": "Действия",
+      "monitor.capture": "Снять фото",
+      "monitor.upload": "Загрузить",
+      "monitor.copy_link": "Ссылка клиенту",
+      "monitor.snapshot": "Снимок",
+      "monitor.settings": "Настройки",
+      "monitor.results": "Сводка",
+      "monitor.reset": "Сброс",
+      "monitor.footnote": "Если камера не запускается в Safari, откройте страницу через HTTPS.",
+      "monitor.camera_hint": "Нажмите «Включить камеру» — браузер запросит разрешение.",
+      "monitor.camera_start": "Включить камеру",
+      "monitor.camera_ok": "Камера включена. Нажмите «Снять фото» для детекта.",
+      "monitor.camera_fail": "Камера недоступна. Используйте «Загрузить» или откройте сайт по HTTPS / localhost.",
+      "monitor.no_media_devices": "Браузер не поддерживает камеру в этом контексте.",
+      "monitor.results_title": "Сводка по местам",
+      "monitor.badge_client": "Режим: Клиент",
+      "monitor.badge_source": "Режим: Источник (фото)",
+      "cabinet.title": "Личный кабинет",
+      "cabinet.lead": "Бронирование парковочных мест по ID слота с главной страницы мониторинга.",
+      "cabinet.hello": "Привет,",
+      "cabinet.hint": "Например slot_3 — тот же идентификатор, что показывает детектор на главной.",
+      "cabinet.new_booking": "Новая бронь",
+      "cabinet.slot_id": "ID места",
+      "cabinet.hours": "Часы",
+      "cabinet.note": "Комментарий (необязательно)",
+      "cabinet.book_btn": "Забронировать",
+      "cabinet.my_bookings": "Мои брони",
+      "cabinet.family": "Семейный аккаунт",
+      "cabinet.family_lead": "Один общий аккаунт: брони и оплаты видны всем участникам семьи.",
+      "cabinet.family_members": "Участники",
+      "cabinet.family_invite": "Код приглашения",
+      "cabinet.family_invite_hint": "Другой человек указывает этот код при регистрации — попадёт в вашу семью.",
+      "cabinet.family_copy": "Скопировать код",
+      "cabinet.family_refresh": "Новый код",
+      "loyalty.title": "Баллы лояльности",
+      "loyalty.lead": "За каждый оплаченный час парковки начисляются баллы. Ими можно оплатить бронь.",
+      "loyalty.balance": "Баланс",
+      "loyalty.rate_earn": "За 1 час оплаты",
+      "loyalty.rate_redeem": "За 1 час бесплатно",
+      "loyalty.free_hours": "Хватит на ~{n} ч бесплатно",
+      "loyalty.redeem_booking": "Забронировать за баллы",
+      "loyalty.redeem_hint": "Списать баллы сразу при бронировании (без рублёвой оплаты)",
+      "cabinet.pay_points": "Баллы",
+      "cabinet.paid_points": "за баллы",
+      "pay.points_btn": "Оплатить баллами ({cost} б.)",
+      "pay.points_done": "Оплачено баллами: −{cost} б., остаток {balance}",
+      "pay.points_confirm": "Списать {cost} баллов за бронь {slot}? (остаток после оплаты: {after})",
+      "msg.insufficient_points": "Недостаточно баллов",
+      "msg.booking_points_ok": "Забронировано и оплачено баллами",
+      "cabinet.col_booked_by": "Кто забронировал",
+      "toast.family_code_copied": "Код скопирован",
+      "toast.family_code_refreshed": "Новый код приглашения создан",
+      "loyalty.title": "Loyalty points",
+      "loyalty.lead": "Earn points for each paid parking hour. Redeem for free booking time.",
+      "loyalty.balance": "Balance",
+      "loyalty.rate_earn": "Per paid hour",
+      "loyalty.rate_redeem": "Per free hour",
+      "loyalty.free_hours": "Enough for ~{n} free hour(s)",
+      "loyalty.redeem_booking": "Book with points",
+      "loyalty.redeem_hint": "Deduct points when booking (no card payment)",
+      "cabinet.pay_points": "Points",
+      "cabinet.paid_points": "points",
+      "pay.points_btn": "Pay with points ({cost} pts)",
+      "pay.points_done": "Paid with points: −{cost} pts, balance {balance}",
+      "pay.points_confirm": "Spend {cost} points for {slot}? (balance after: {after})",
+      "msg.insufficient_points": "Not enough points",
+      "msg.booking_points_ok": "Booked and paid with points",
+      "cabinet.security": "Безопасность",
+      "cabinet.pw_current": "Текущий пароль",
+      "cabinet.pw_new": "Новый пароль",
+      "cabinet.pw_change": "Сменить пароль",
+      "admin.title": "Администрирование",
+      "admin.lead": "Пользователи, брони и сводка по парковке.",
+      "admin.summary": "Сводка",
+      "admin.summary_hint": "Подсказка по слотам появляется после детекта на странице мониторинга.",
+      "admin.users": "Пользователи",
+      "admin.create_user": "Создать пользователя",
+      "admin.ph_login": "логин",
+      "admin.ph_password": "пароль",
+      "admin.ph_name": "отображаемое имя",
+      "admin.create_btn": "Создать",
+      "admin.all_bookings": "Все брони",
+      "admin.forbidden_title": "Нужны права администратора",
+      "admin.forbidden_text": "Вы вошли как обычный пользователь.",
+      "admin.go_cabinet": "Перейти в кабинет",
+      "admin.th_login": "Логин",
+      "admin.th_name": "Имя",
+      "admin.th_role": "Роль",
+      "admin.th_active": "Активен",
+      "admin.th_slot": "Место",
+      "admin.th_user": "Пользователь",
+      "admin.th_from": "С",
+      "admin.th_to": "До",
+      "admin.th_status": "Статус",
+      "admin.disable": "Выключить",
+      "admin.enable": "Включить",
+      "err.bad_credentials": "Неверный логин или пароль",
+      "err.invalid_username": "Логин: 3–32 символа, латиница, цифры и _ (начинается с буквы)",
+      "err.weak_password": "Пароль должен быть не короче 8 символов",
+      "err.username_taken": "Этот логин уже занят",
+      "err.registration_disabled": "Регистрация отключена",
+      "err.rate_limited": "Слишком много попыток. Подождите немного.",
+      "err.invalid_json": "Некорректный запрос",
+      "err.generic": "Ошибка",
+      "err.password_mismatch": "Пароли не совпадают",
+      "err.wrong_current_password": "Неверный текущий пароль",
+      "toast.link_copied": "Ссылка для клиента скопирована",
+      "toast.booking_created": "Место забронировано",
+      "toast.booking_cancelled": "Бронь отменена",
+      "toast.booking_cancel_fail": "Не удалось отменить бронь",
+      "toast.password_updated": "Пароль обновлён",
+      "toast.user_created": "Пользователь создан",
+      "toast.user_updated": "Статус пользователя обновлён",
+      "toast.user_update_fail": "Не удалось обновить пользователя",
+      "msg.booking_busy": "Это место уже занято в выбранный интервал.",
+      "msg.booking_fail": "Не удалось создать бронь.",
+      "msg.booking_action_fail": "Не удалось выполнить действие.",
+      "msg.session_expired": "Сессия истекла. Войдите снова.",
+      "msg.payment_api_missing": "Сервер без оплаты (старая версия). Перезапустите run_with_train4.bat и обновите страницу (Ctrl+F5).",
+      "msg.network_error": "Нет ответа от сервера. Запущен ли run_with_train4.bat?",
+      "msg.server_busy": "Сервер занят (загрузка модели). Подождите 10–30 с и повторите.",
+      "cabinet.reload": "Повторить загрузку",
+      "msg.booking_not_active": "Бронь уже завершена или отменена.",
+      "msg.booking_extended_ok": "Время продлено до {until}",
+      "msg.booking_ok": "Бронь создана.",
+      "msg.bookings_empty": "Пока нет бронирований.",
+      "msg.bookings_load_fail": "Не удалось загрузить",
+      "msg.user_create_fail": "Не удалось создать",
+      "msg.user_created_id": "Создан пользователь id={id}",
+      "prefs.a11y": "Крупный шрифт",
+      "prefs.a11y_off": "Обычный",
+      "prefs.a11y_on": "Крупный",
+      "traffic.green": "Свободно",
+      "traffic.yellow": "Загружено",
+      "traffic.red": "Почти нет мест",
+      "traffic.unknown": "Нет данных",
+      "traffic.title": "Загруженность",
+      "slotmap.title": "Карта мест",
+      "slotmap.empty": "Сделайте снимок на странице мониторинга.",
+      "slotmap.hint": "Нажмите на свободное место для брони.",
+      "cabinet.plate": "Госномер",
+      "cabinet.tariff": "Стоимость",
+      "cabinet.tariff_calc": "≈ {price} ₽ ({rate} ₽/ч)",
+      "cabinet.sessions": "История сессий",
+      "cabinet.extend": "+1 ч",
+      "cabinet.pay": "Оплатить",
+      "cabinet.receipt": "Чек",
+      "cabinet.pay_demo": "Демо-оплата: без карты и банка — PDF-чек после оплаты.",
+      "cabinet.paid": "Оплачено",
+      "cabinet.col_payment": "Оплата",
+      "cabinet.col_actions": "Действия",
+      "cabinet.unpaid": "Не оплачено",
+      "cabinet.no_plate": "не указан",
+      "cabinet.loading": "Загрузка…",
+      "pay.sending": "Запрос к серверу…",
+      "pay.dialog_title": "Подтвердите оплату",
+      "pay.dialog_hint": "Демо: деньги не списываются с карты.",
+      "pay.dialog_body": "Сумма {amount} ₽, место {slot}.",
+      "pay.confirm": "Демо-оплата {amount} ₽ за место {slot}?\n(без списания с карты)",
+      "pay.done": "Оплачено {amount} ₽. Чек: {receipt}",
+      "msg.already_paid": "Уже оплачено ({amount} ₽). Чек можно скачать снова.",
+      "msg.payment_db_error": "Ошибка базы платежей. Перезапустите сервер.",
+      "alert.expires_soon": "Место {slot}: осталось ~{min} мин",
+      "err.blocked": "Аккаунт заблокирован",
+      "msg.slot_unavailable": "Место недоступно для брони.",
+      "toast.extended": "Время продлено",
+      "toast.paid": "Оплата прошла (тест)",
+      "admin.block_reason": "Причина блокировки",
+      "admin.slots": "Статусы мест",
+      "admin.slots_map_hint": "Клик по ячейке — отключить или снова включить место.",
+      "admin.slots_all_on": "Все места включены для брони.",
+      "admin.slots_off_list": "Отключено",
+      "admin.slot_disabled": "Место {slot} отключено",
+      "admin.slot_enabled": "Место {slot} снова доступно",
+      "admin.find_plate": "Поиск по госномеру",
+      "admin.find_plate_ph": "А123БВ777",
+      "admin.find_plate_btn": "Найти",
+      "admin.find_plate_hint": "По активной брони с указанным номером.",
+      "admin.find_plate_empty": "Нет активной брони с таким номером.",
+      "admin.find_plate_short": "Введите минимум 2 символа номера.",
+      "admin.find_plate_slot": "Место",
+      "admin.find_plate_live": "Камера",
+      "admin.find_plate_until": "Бронь до",
+      "support.title": "Поддержка",
+      "support.user_lead": "Напишите администратору — ответ появится здесь.",
+      "support.admin_title": "Чат поддержки",
+      "support.placeholder": "Сообщение…",
+      "support.send": "Отправить",
+      "support.empty": "Пока нет сообщений. Напишите первым.",
+      "support.no_threads": "Пока никто не писал в поддержку.",
+      "support.pick_user": "Выберите пользователя слева",
+      "support.send_fail": "Не удалось отправить",
+      "admin.analytics": "Аналитика загрузки",
+      "admin.finance": "Финансы",
+      "admin.transfer_slot": "Перенести",
+      "admin.stat_users": "Пользователей",
+      "admin.stat_bookings": "Активных броней",
+      "admin.stat_detected": "Слотов с камеры",
+      "admin.active_by_slot": "Брони по местам",
+      "admin.detected_slots": "Детект с мониторинга",
+      "admin.no_active_slots": "Нет активных броней.",
+      "admin.th_count": "Броней",
+      "admin.th_note": "Примечание",
+      "admin.th_updated": "Обновлено",
+      "admin.th_day": "День",
+      "admin.load_fail": "Не удалось загрузить",
+      "admin.no_analytics": "Нет данных наблюдений. Сделайте снимок на странице мониторинга.",
+      "admin.analytics_days": "Период (дней)",
+      "admin.analytics_peak": "Пик занятости",
+      "admin.analytics_daily": "По дням",
+      "admin.avg_free": "Ср. свободно",
+      "admin.avg_occupied": "Ср. занято",
+      "admin.peak_occupied": "Пик занято",
+      "admin.peak_chart": "Пик по дням",
+      "admin.revenue_total": "Выручка",
+      "admin.payments_count": "Платежей",
+      "admin.tariff_hour": "Тариф / час",
+      "admin.revenue_by_day": "Выручка по дням",
+      "admin.revenue": "Сумма",
+      "admin.revenue_chart": "Выручка (график)",
+      "admin.no_payments": "Платежей за период нет.",
+      "admin.days_short": "дн.",
+    },
+    en: {
+      "app.name": "Parking Eye",
+      "nav.dashboard": "Home",
+      "nav.monitor": "Monitoring",
+      "nav.cabinet": "Account",
+      "nav.admin": "Admin",
+      "nav.monitor_short": "Monitor",
+      "role.admin": "Administrator",
+      "role.user": "User",
+      "common.logout": "Log out",
+      "common.show_password": "Show",
+      "common.hide_password": "Hide",
+      "common.show_password_aria": "Show password",
+      "common.hide_password_aria": "Hide password",
+      "common.loading": "Loading…",
+      "common.yes": "yes",
+      "common.no": "no",
+      "common.cancel": "Cancel",
+      "common.empty": "Empty.",
+      "prefs.theme": "Theme",
+      "prefs.language": "Language",
+      "prefs.theme_dark": "Dark",
+      "prefs.theme_light": "Light",
+      "prefs.lang_ru": "RU",
+      "prefs.lang_en": "EN",
+      "bc.label": "Breadcrumbs",
+      "nav.aria": "Navigation",
+      "nav.sections": "Sections",
+      "title.dashboard": "Home — Parking Eye",
+      "title.monitor": "Monitoring — Parking Eye",
+      "title.cabinet": "Account — Parking Eye",
+      "title.admin": "Admin — Parking Eye",
+      "title.login": "Sign in — Parking Eye",
+      "title.register": "Sign up — Parking Eye",
+      "auth.login_title": "Sign in",
+      "auth.login_sub": "Smart parking monitoring and spot booking",
+      "auth.register_title": "Create account",
+      "auth.register_sub": "You will enter the app right after registration",
+      "auth.username": "Email or username",
+      "auth.email": "Email",
+      "auth.family_invite": "Family account code",
+      "auth.family_invite_ph": "Optional — if you were invited",
+      "auth.family_invite_hint": "Leave empty to create a new family account, or enter the owner's invite code.",
+      "auth.password": "Password",
+      "auth.password2": "Confirm password",
+      "auth.name": "Display name",
+      "auth.name_ph": "How should we call you",
+      "auth.login_btn": "Sign in",
+      "auth.register_btn": "Sign up",
+      "auth.no_account": "No account?",
+      "auth.register_link": "Sign up",
+      "auth.has_account": "Already have an account?",
+      "auth.login_link": "Sign in",
+      "auth.username_hint": "Email (user@mail.com) or username: latin letters, digits, _; 3+ chars",
+      "err.invalid_family_invite": "Invite code: 6–12 characters (letters and digits)",
+      "err.family_invite_not_found": "Family invite code not found",
+      "dash.welcome": "Welcome",
+      "dash.lead": "{name}, pick a section or start with parking monitoring.",
+      "dash.monitor": "Monitoring",
+      "dash.monitor_desc": "Camera, spot detection, client mode",
+      "dash.cabinet": "Account",
+      "dash.cabinet_desc": "Book parking spots",
+      "dash.parking_now": "Parking now",
+      "dash.next_booking": "Next booking",
+      "dash.quick_links": "Quick links",
+      "dash.all_bookings": "All bookings →",
+      "dash.no_bookings": "No active bookings.",
+      "dash.until": "until",
+      "dash.free": "free",
+      "dash.occupied": "occupied",
+      "dash.total": "total",
+      "dash.updated": "Updated",
+      "dash.no_camera": "No camera data yet. Open monitoring and capture a frame.",
+      "dash.load_fail": "Could not load overview.",
+      "dash.active_n": "{n} active",
+      "dash.link_source": "Source (camera)",
+      "dash.link_client": "Client (view)",
+      "dash.link_admin": "Admin panel",
+      "dash.just_now": "just now",
+      "dash.min_ago": "{n} min ago",
+      "dash.h_ago": "{n} h ago",
+      "monitor.title": "Parking monitoring",
+      "monitor.lead": "Real-time spot detection: camera snapshot or client stream.",
+      "monitor.mode_aria": "View mode",
+      "monitor.mode_source": "Source",
+      "monitor.mode_client": "Client",
+      "monitor.stat_free": "Free",
+      "monitor.stat_busy": "Occupied",
+      "monitor.stat_total": "Total spots",
+      "monitor.actions": "Actions",
+      "monitor.capture": "Capture",
+      "monitor.upload": "Upload",
+      "monitor.copy_link": "Client link",
+      "monitor.snapshot": "Snapshot",
+      "monitor.settings": "Settings",
+      "monitor.results": "Summary",
+      "monitor.reset": "Reset",
+      "monitor.footnote": "If the camera fails in Safari, open the page over HTTPS.",
+      "monitor.camera_hint": "Click «Enable camera» — the browser will ask for permission.",
+      "monitor.camera_start": "Enable camera",
+      "monitor.camera_ok": "Camera on. Click «Capture» to run detection.",
+      "monitor.camera_fail": "Camera unavailable. Use «Upload» or open via HTTPS / localhost.",
+      "monitor.no_media_devices": "Camera API is not available in this browser context.",
+      "monitor.results_title": "Spots summary",
+      "monitor.badge_client": "Mode: Client",
+      "monitor.badge_source": "Mode: Source (photo)",
+      "cabinet.title": "My account",
+      "cabinet.lead": "Book spots by slot ID from the monitoring page.",
+      "cabinet.hello": "Hello,",
+      "cabinet.hint": "For example slot_3 — same ID as shown by the detector on the home page.",
+      "cabinet.new_booking": "New booking",
+      "cabinet.slot_id": "Spot ID",
+      "cabinet.hours": "Hours",
+      "cabinet.note": "Note (optional)",
+      "cabinet.book_btn": "Book",
+      "cabinet.my_bookings": "My bookings",
+      "cabinet.family": "Family account",
+      "cabinet.family_lead": "One shared account: all members see the same bookings and payments.",
+      "cabinet.family_members": "Members",
+      "cabinet.family_invite": "Invite code",
+      "cabinet.family_invite_hint": "Others enter this code when signing up to join your family.",
+      "cabinet.family_copy": "Copy code",
+      "cabinet.family_refresh": "New code",
+      "cabinet.col_booked_by": "Booked by",
+      "toast.family_code_copied": "Code copied",
+      "toast.family_code_refreshed": "New invite code generated",
+      "cabinet.security": "Security",
+      "cabinet.pw_current": "Current password",
+      "cabinet.pw_new": "New password",
+      "cabinet.pw_change": "Change password",
+      "admin.title": "Administration",
+      "admin.lead": "Users, bookings and parking summary.",
+      "admin.summary": "Summary",
+      "admin.summary_hint": "Slot hints appear after detection on the monitoring page.",
+      "admin.users": "Users",
+      "admin.create_user": "Create user",
+      "admin.ph_login": "username",
+      "admin.ph_password": "password",
+      "admin.ph_name": "display name",
+      "admin.create_btn": "Create",
+      "admin.all_bookings": "All bookings",
+      "admin.forbidden_title": "Admin access required",
+      "admin.forbidden_text": "You are signed in as a regular user.",
+      "admin.go_cabinet": "Go to account",
+      "admin.th_login": "Login",
+      "admin.th_name": "Name",
+      "admin.th_role": "Role",
+      "admin.th_active": "Active",
+      "admin.th_slot": "Spot",
+      "admin.th_user": "User",
+      "admin.th_from": "From",
+      "admin.th_to": "To",
+      "admin.th_status": "Status",
+      "admin.disable": "Disable",
+      "admin.enable": "Enable",
+      "err.bad_credentials": "Invalid username or password",
+      "err.invalid_username": "Username: 3–32 chars, latin letters, digits, _; starts with a letter",
+      "err.weak_password": "Password must be at least 8 characters",
+      "err.username_taken": "This username is taken",
+      "err.registration_disabled": "Registration is disabled",
+      "err.rate_limited": "Too many attempts. Please wait.",
+      "err.invalid_json": "Invalid request",
+      "err.generic": "Error",
+      "err.password_mismatch": "Passwords do not match",
+      "err.wrong_current_password": "Wrong current password",
+      "toast.link_copied": "Client link copied",
+      "toast.booking_created": "Spot booked",
+      "toast.booking_cancelled": "Booking cancelled",
+      "toast.booking_cancel_fail": "Could not cancel booking",
+      "toast.password_updated": "Password updated",
+      "toast.user_created": "User created",
+      "toast.user_updated": "User status updated",
+      "toast.user_update_fail": "Could not update user",
+      "msg.booking_busy": "This spot is already booked for the selected time.",
+      "msg.booking_fail": "Could not create booking.",
+      "msg.booking_action_fail": "Action failed.",
+      "msg.session_expired": "Session expired. Please sign in again.",
+      "msg.payment_api_missing": "Payment API missing (old server). Restart run_with_train4.bat and hard-refresh (Ctrl+F5).",
+      "msg.network_error": "No response from server. Is run_with_train4.bat running?",
+      "msg.server_busy": "Server busy (loading model). Wait 10–30 s and try again.",
+      "cabinet.reload": "Reload",
+      "msg.booking_not_active": "Booking already ended or cancelled.",
+      "msg.booking_extended_ok": "Extended until {until}",
+      "msg.booking_ok": "Booking created.",
+      "msg.bookings_empty": "No bookings yet.",
+      "msg.bookings_load_fail": "Could not load",
+      "msg.user_create_fail": "Could not create",
+      "msg.user_created_id": "User created id={id}",
+      "prefs.a11y": "Large text",
+      "prefs.a11y_off": "Normal",
+      "prefs.a11y_on": "Large",
+      "traffic.green": "Plenty free",
+      "traffic.yellow": "Busy",
+      "traffic.red": "Almost full",
+      "traffic.unknown": "No data",
+      "traffic.title": "Occupancy",
+      "slotmap.title": "Spot map",
+      "slotmap.empty": "Capture a frame on the monitoring page.",
+      "slotmap.hint": "Tap a free spot to book.",
+      "cabinet.plate": "License plate",
+      "cabinet.tariff": "Price",
+      "cabinet.tariff_calc": "≈ {price} ₽ ({rate} ₽/h)",
+      "cabinet.sessions": "Trip history",
+      "cabinet.extend": "+1 h",
+      "cabinet.pay": "Pay",
+      "cabinet.receipt": "Receipt",
+      "cabinet.pay_demo": "Demo payment: no card or bank — PDF receipt after payment.",
+      "cabinet.paid": "Paid",
+      "cabinet.col_payment": "Payment",
+      "cabinet.col_actions": "Actions",
+      "cabinet.unpaid": "Unpaid",
+      "cabinet.no_plate": "not set",
+      "cabinet.loading": "Loading…",
+      "pay.sending": "Contacting server…",
+      "pay.dialog_title": "Confirm payment",
+      "pay.dialog_hint": "Demo: no real card charge.",
+      "pay.dialog_body": "Amount {amount} ₽, slot {slot}.",
+      "pay.confirm": "Demo pay {amount} ₽ for {slot}?\n(no real card charge)",
+      "pay.done": "Paid {amount} ₽. Receipt: {receipt}",
+      "msg.already_paid": "Already paid ({amount} ₽). Download receipt again.",
+      "msg.payment_db_error": "Payment database error. Restart the server.",
+      "alert.expires_soon": "Spot {slot}: ~{min} min left",
+      "err.blocked": "Account blocked",
+      "msg.slot_unavailable": "Spot is not available for booking.",
+      "toast.extended": "Time extended",
+      "toast.paid": "Payment OK (mock)",
+      "admin.block_reason": "Block reason",
+      "admin.slots": "Spot statuses",
+      "admin.slots_map_hint": "Click a cell to disable or re-enable a spot.",
+      "admin.slots_all_on": "All spots are open for booking.",
+      "admin.slots_off_list": "Disabled",
+      "admin.slot_disabled": "Spot {slot} disabled",
+      "admin.slot_enabled": "Spot {slot} enabled again",
+      "admin.find_plate": "Find by plate",
+      "admin.find_plate_ph": "A123BC777",
+      "admin.find_plate_btn": "Find",
+      "admin.find_plate_hint": "Active booking with this plate number.",
+      "admin.find_plate_empty": "No active booking for this plate.",
+      "admin.find_plate_short": "Enter at least 2 characters.",
+      "admin.find_plate_slot": "Spot",
+      "admin.find_plate_live": "Camera",
+      "admin.find_plate_until": "Booked until",
+      "support.title": "Support",
+      "support.user_lead": "Message the admin — replies appear here.",
+      "support.admin_title": "Support chat",
+      "support.placeholder": "Message…",
+      "support.send": "Send",
+      "support.empty": "No messages yet. Write first.",
+      "support.no_threads": "No support conversations yet.",
+      "support.pick_user": "Select a user on the left",
+      "support.send_fail": "Could not send",
+      "admin.analytics": "Occupancy analytics",
+      "admin.finance": "Finance",
+      "admin.transfer_slot": "Move",
+      "admin.stat_users": "Users",
+      "admin.stat_bookings": "Active bookings",
+      "admin.stat_detected": "Detected slots",
+      "admin.active_by_slot": "Bookings by slot",
+      "admin.detected_slots": "From monitoring",
+      "admin.no_active_slots": "No active bookings.",
+      "admin.th_count": "Bookings",
+      "admin.th_note": "Note",
+      "admin.th_updated": "Updated",
+      "admin.th_day": "Day",
+      "admin.load_fail": "Failed to load",
+      "admin.no_analytics": "No observation data. Capture on the monitoring page.",
+      "admin.analytics_days": "Period (days)",
+      "admin.analytics_peak": "Peak occupancy",
+      "admin.analytics_daily": "Daily",
+      "admin.avg_free": "Avg free",
+      "admin.avg_occupied": "Avg occupied",
+      "admin.peak_occupied": "Peak occupied",
+      "admin.peak_chart": "Peak by day",
+      "admin.revenue_total": "Revenue",
+      "admin.payments_count": "Payments",
+      "admin.tariff_hour": "Tariff / hour",
+      "admin.revenue_by_day": "Revenue by day",
+      "admin.revenue": "Amount",
+      "admin.revenue_chart": "Revenue chart",
+      "admin.no_payments": "No payments in this period.",
+      "admin.days_short": "days",
+    },
+  },
+
+  t(key, vars) {
+    const pack = this.dict[this.lang] || this.dict.ru;
+    let s = pack[key] ?? this.dict.ru[key] ?? key;
+    if (vars && typeof s === "string") {
+      for (const [k, v] of Object.entries(vars)) {
+        s = s.replace(new RegExp(`\\{${k}\\}`, "g"), String(v));
+      }
+    }
+    return s;
+  },
+
+  setLang(lang) {
+    const next = lang === "en" ? "en" : "ru";
+    if (next === this.lang) return;
+    this.lang = next;
+    localStorage.setItem("pe_lang", next);
+    document.documentElement.setAttribute("lang", next);
+    this.apply(document);
+    this._syncPrefButtons();
+    this._emit();
+  },
+
+  setTheme(theme) {
+    const next = theme === "light" ? "light" : "dark";
+    if (next === this.theme) return;
+    this.theme = next;
+    localStorage.setItem("pe_theme", next);
+    document.documentElement.setAttribute("data-theme", next);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", next === "light" ? "#f0f1f5" : "#08080c");
+    this._syncPrefButtons();
+    this._emit();
+  },
+
+  toggleTheme() {
+    this.setTheme(this.theme === "dark" ? "light" : "dark");
+  },
+
+  setA11yLarge(on) {
+    const next = !!on;
+    if (next === this.a11yLarge) return;
+    this.a11yLarge = next;
+    localStorage.setItem("pe_a11y", next ? "1" : "0");
+    if (next) document.documentElement.setAttribute("data-a11y", "large");
+    else document.documentElement.removeAttribute("data-a11y");
+    this._syncPrefButtons();
+    this._emit();
+  },
+
+  apply(root) {
+    const r = root || document;
+    r.querySelectorAll("[data-i18n]").forEach((el) => {
+      const key = el.getAttribute("data-i18n");
+      if (key) el.textContent = this.t(key);
+    });
+    r.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-placeholder");
+      if (key) el.placeholder = this.t(key);
+    });
+    r.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-aria");
+      if (key) el.setAttribute("aria-label", this.t(key));
+    });
+    const titleKey = document.body?.getAttribute("data-i18n-title");
+    if (titleKey) document.title = this.t(titleKey);
+    r.querySelectorAll(".field-toggle").forEach((btn) => {
+      const input = btn.parentElement?.querySelector("input");
+      if (!input) return;
+      const show = input.type === "text";
+      btn.textContent = this.t(show ? "common.hide_password" : "common.show_password");
+      btn.setAttribute("aria-label", this.t(show ? "common.hide_password_aria" : "common.show_password_aria"));
+    });
+  },
+
+  mountPrefs(container) {
+    const host = typeof container === "string" ? document.querySelector(container) : container;
+    if (!host) return;
+    host.innerHTML = `
+      <div class="app-prefs">
+        <div class="pref-row">
+          <span class="pref-label" data-i18n="prefs.theme"></span>
+          <div class="pref-segment" role="group" id="prefThemeGroup">
+            <button type="button" class="pref-seg-btn" data-theme-pref="dark" data-i18n="prefs.theme_dark"></button>
+            <button type="button" class="pref-seg-btn" data-theme-pref="light" data-i18n="prefs.theme_light"></button>
+          </div>
+        </div>
+        <div class="pref-row">
+          <span class="pref-label" data-i18n="prefs.language"></span>
+          <div class="pref-segment" role="group" id="prefLangGroup">
+            <button type="button" class="pref-seg-btn" data-lang-pref="ru" data-i18n="prefs.lang_ru"></button>
+            <button type="button" class="pref-seg-btn" data-lang-pref="en" data-i18n="prefs.lang_en"></button>
+          </div>
+        </div>
+        <div class="pref-row">
+          <span class="pref-label" data-i18n="prefs.a11y"></span>
+          <div class="pref-segment" role="group" id="prefA11yGroup">
+            <button type="button" class="pref-seg-btn" data-a11y-pref="0" data-i18n="prefs.a11y_off"></button>
+            <button type="button" class="pref-seg-btn" data-a11y-pref="1" data-i18n="prefs.a11y_on"></button>
+          </div>
+        </div>
+      </div>
+    `;
+    this.apply(host);
+    host.querySelectorAll("[data-theme-pref]").forEach((btn) => {
+      btn.addEventListener("click", () => this.setTheme(btn.getAttribute("data-theme-pref")));
+    });
+    host.querySelectorAll("[data-lang-pref]").forEach((btn) => {
+      btn.addEventListener("click", () => this.setLang(btn.getAttribute("data-lang-pref")));
+    });
+    host.querySelectorAll("[data-a11y-pref]").forEach((btn) => {
+      btn.addEventListener("click", () => this.setA11yLarge(btn.getAttribute("data-a11y-pref") === "1"));
+    });
+    this._syncPrefButtons();
+  },
+
+  _syncPrefButtons() {
+    document.querySelectorAll("[data-theme-pref]").forEach((btn) => {
+      btn.classList.toggle("is-active", btn.getAttribute("data-theme-pref") === this.theme);
+    });
+    document.querySelectorAll("[data-lang-pref]").forEach((btn) => {
+      btn.classList.toggle("is-active", btn.getAttribute("data-lang-pref") === this.lang);
+    });
+    document.querySelectorAll("[data-a11y-pref]").forEach((btn) => {
+      btn.classList.toggle("is-active", (btn.getAttribute("data-a11y-pref") === "1") === this.a11yLarge);
+    });
+  },
+
+  _emit() {
+    window.dispatchEvent(
+      new CustomEvent("pe-settings", { detail: { lang: this.lang, theme: this.theme } })
+    );
+  },
+
+  onChange(fn) {
+    window.addEventListener("pe-settings", fn);
+  },
+};

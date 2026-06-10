@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <title>Parking Eye</title>
+    <script src="/settings.js?pev=20260525c"></script>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="app-body page-cabinet" data-i18n-title="title.cabinet">
+    <div id="appShell"></div>
+
+    <div class="app-main">
+      <header class="page-header page-header--compact">
+        <h1 class="page-title" data-i18n="cabinet.title">Личный кабинет</h1>
+        <p class="page-lead" data-i18n="cabinet.lead">Бронирование парковочных мест</p>
+      </header>
+
+      <main class="page-content-narrow" id="cabinetPanel">
+        <div id="expiryAlerts" class="hidden"></div>
+
+        <div class="panel card">
+          <div class="card-title"><span data-i18n="cabinet.hello">Привет,</span> <span id="displayName"></span></div>
+          <p class="small muted" data-i18n="cabinet.hint">Например slot_3</p>
+        </div>
+
+        <div class="panel card" id="loyaltyPanel">
+          <div class="card-title" data-i18n="loyalty.title">Баллы лояльности</div>
+          <p class="small muted" data-i18n="loyalty.lead">Начисление за оплату, списание за бесплатные часы.</p>
+          <p class="loyalty-balance-line">
+            <span data-i18n="loyalty.balance">Баланс</span>:
+            <strong id="loyaltyBalance">0</strong> баллов
+          </p>
+          <p class="small muted" id="loyaltyRates"></p>
+          <p class="small" id="loyaltyFreeHours"></p>
+        </div>
+
+        <div class="panel card" id="familyPanel">
+          <div class="card-title" data-i18n="cabinet.family">Семейный аккаунт</div>
+          <p class="small muted" data-i18n="cabinet.family_lead">Один общий аккаунт для всей семьи.</p>
+          <div id="familyMembers" class="family-members"></div>
+          <div id="familyInviteBlock" class="hidden family-invite-block">
+            <p class="small"><span data-i18n="cabinet.family_invite">Код приглашения</span>: <strong id="familyInviteCode" class="family-code"></strong></p>
+            <p class="small muted" data-i18n="cabinet.family_invite_hint">Для регистрации нового участника.</p>
+            <div class="toolbar" style="margin-top:8px">
+              <button type="button" class="btn ghost btn-sm" id="btnFamilyCopy" data-i18n="cabinet.family_copy">Скопировать код</button>
+              <button type="button" class="btn ghost btn-sm" id="btnFamilyRefresh" data-i18n="cabinet.family_refresh">Новый код</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel card">
+          <div class="card-title" data-i18n="slotmap.title">Карта мест</div>
+          <p class="small muted" data-i18n="slotmap.hint">Нажмите на свободное место для брони.</p>
+          <div id="slotMapHost"></div>
+        </div>
+
+        <div class="panel card">
+          <div class="card-title" data-i18n="cabinet.new_booking">Новая бронь</div>
+          <form id="formBook" class="form-stack">
+            <label class="field">
+              <span data-i18n="cabinet.slot_id">ID места</span>
+              <input id="inSlotId" placeholder="slot_12" maxlength="64" required />
+            </label>
+            <label class="field">
+              <span data-i18n="cabinet.plate">Госномер</span>
+              <input id="inPlate" placeholder="A123BC77" maxlength="24" />
+            </label>
+            <label class="field">
+              <span data-i18n="cabinet.hours">Часы</span>
+              <input id="inHours" type="number" min="0.25" max="72" step="0.25" value="3" />
+            </label>
+            <p id="tariffLine" class="tariff-line muted" aria-live="polite"></p>
+            <p id="loyaltyBookHint" class="small muted hidden"></p>
+            <label class="field field-check">
+              <input type="checkbox" id="inRedeemPoints" />
+              <span data-i18n="loyalty.redeem_booking">Забронировать за баллы</span>
+            </label>
+            <p class="field-hint" data-i18n="loyalty.redeem_hint">Списать баллы при создании брони</p>
+            <label class="field">
+              <span data-i18n="cabinet.note">Комментарий (необязательно)</span>
+              <input id="inNote" maxlength="200" />
+            </label>
+            <button type="submit" class="btn primary" data-i18n="cabinet.book_btn">Забронировать</button>
+          </form>
+          <div id="bookMsg" class="small"></div>
+        </div>
+
+        <div class="panel card">
+          <div class="card-title" data-i18n="cabinet.my_bookings">Мои брони</div>
+          <p class="small muted" data-i18n="cabinet.pay_demo"></p>
+          <div id="bookingsWrap" class="table-wrap"></div>
+        </div>
+
+        <div class="panel card">
+          <div class="card-title" data-i18n="cabinet.sessions">История сессий</div>
+          <div id="sessionsWrap" class="table-wrap"></div>
+        </div>
+
+        <div class="panel card" id="supportPanel">
+          <div class="card-title" data-i18n="support.title">Поддержка</div>
+          <p class="small muted" data-i18n="support.user_lead">Напишите администратору — ответ появится здесь.</p>
+          <div id="supportLog" class="support-chat__log" role="log" aria-live="polite"></div>
+          <form id="formSupport" class="support-chat__form">
+            <input id="supportInput" type="text" maxlength="2000" autocomplete="off" data-i18n-placeholder="support.placeholder" />
+            <button type="submit" class="btn primary" data-i18n="support.send">Отправить</button>
+          </form>
+        </div>
+
+        <div class="panel card">
+          <div class="card-title" data-i18n="cabinet.security">Безопасность</div>
+          <form id="formPassword" class="form-stack">
+            <label class="field">
+              <span data-i18n="cabinet.pw_current">Текущий пароль</span>
+              <input id="pwCurrent" type="password" autocomplete="current-password" required />
+            </label>
+            <label class="field">
+              <span data-i18n="cabinet.pw_new">Новый пароль</span>
+              <input id="pwNew" type="password" autocomplete="new-password" required minlength="8" />
+            </label>
+            <button type="submit" class="btn ghost" data-i18n="cabinet.pw_change">Сменить пароль</button>
+          </form>
+          <div id="pwMsg" class="small"></div>
+        </div>
+      </main>
+    </div>
+
+    <dialog id="payDialog" class="pe-pay-dialog" aria-labelledby="payDialogTitle">
+      <div class="pe-pay-dialog__panel card">
+        <div class="card-title" id="payDialogTitle" data-i18n="pay.dialog_title">Подтвердите оплату</div>
+        <p id="payDialogText" class="small"></p>
+        <p class="small muted" data-i18n="pay.dialog_hint">Демо: деньги не списываются с карты.</p>
+        <div class="pe-pay-dialog__actions">
+          <button type="button" class="btn primary" id="payDialogOk" data-i18n="cabinet.pay">Оплатить</button>
+          <button type="button" class="btn ghost" id="payDialogCancel" data-i18n="common.cancel">Отмена</button>
+        </div>
+      </div>
+    </dialog>
+
+    <script src="/auth.js?pev=20260525c"></script>
+    <script src="/ui.js?pev=20260525c"></script>
+    <script src="/pe-features.js?pev=20260525c"></script>
+    <script src="/app-shell.js?pev=20260525c"></script>
+    <script src="/support-chat.js?pev=20260525c"></script>
+    <script src="/cabinet.js?pev=20260525c"></script>
+  </body>
+</html>

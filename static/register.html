@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#08080c" />
+    <title>Parking Eye</title>
+    <script src="/settings.js"></script>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="auth-page" data-i18n-title="title.register">
+    <header class="auth-header">
+      <a href="/login.html" class="auth-brand">
+        <span class="auth-brand-mark">PE</span>
+        <span class="auth-brand-name" data-i18n="app.name">Parking Eye</span>
+      </a>
+      <div id="authPrefs" class="auth-prefs"></div>
+    </header>
+
+    <main class="auth-main">
+      <div class="auth-card">
+        <h1 class="auth-title" data-i18n="auth.register_title">Создать аккаунт</h1>
+        <p class="auth-subtitle" data-i18n="auth.register_sub">После регистрации вы сразу попадёте в приложение</p>
+
+        <form id="formRegister" class="form-stack auth-form">
+          <label class="field">
+            <span data-i18n="auth.name">Имя</span>
+            <input id="inName" name="display_name" autocomplete="name" data-i18n-placeholder="auth.name_ph" maxlength="80" />
+          </label>
+          <label class="field">
+            <span data-i18n="auth.username">Email или логин</span>
+            <input id="inUser" name="username" autocomplete="username" required placeholder="ivan@mail.ru" />
+          </label>
+          <p class="field-hint" data-i18n="auth.username_hint">Email или логин</p>
+          <label class="field">
+            <span data-i18n="auth.family_invite">Код семейного аккаунта</span>
+            <input id="inFamilyInvite" name="family_invite" autocomplete="off" data-i18n-placeholder="auth.family_invite_ph" maxlength="16" />
+          </label>
+          <p class="field-hint" data-i18n="auth.family_invite_hint">Оставьте пустым для нового семейного аккаунта</p>
+          <label class="field">
+            <span data-i18n="auth.password">Пароль</span>
+            <div class="field-row">
+              <input id="inPass" name="password" type="password" autocomplete="new-password" required minlength="8" />
+              <button type="button" class="btn ghost field-toggle" id="togglePass" data-i18n="common.show_password">Показать</button>
+            </div>
+          </label>
+          <label class="field">
+            <span data-i18n="auth.password2">Повторите пароль</span>
+            <div class="field-row">
+              <input id="inPass2" type="password" autocomplete="new-password" required minlength="8" />
+              <button type="button" class="btn ghost field-toggle" id="togglePass2" data-i18n="common.show_password">Показать</button>
+            </div>
+          </label>
+          <button type="submit" class="btn primary auth-submit" data-i18n="auth.register_btn">Зарегистрироваться</button>
+        </form>
+
+        <div id="registerErr" class="error-text hidden" aria-live="polite"></div>
+
+        <p class="auth-links">
+          <span data-i18n="auth.has_account">Уже есть аккаунт?</span>
+          <a href="/login.html" data-i18n="auth.login_link">Войти</a>
+        </p>
+      </div>
+    </main>
+
+    <script src="/ui.js"></script>
+    <script src="/auth.js"></script>
+    <script src="/register.js"></script>
+  </body>
+</html>

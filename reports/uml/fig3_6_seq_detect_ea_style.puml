@@ -1,0 +1,39 @@
+@startuml fig3_6_seq_detect_ea_style
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam sequence {
+  ArrowColor #000000
+  LifeLineBorderColor #000000
+  LifeLineBackgroundColor #FFFFFF
+  ParticipantBorderColor #000000
+  ParticipantBackgroundColor #FFFFFF
+  ActorBorderColor #000000
+  ActorBackgroundColor #FFFFFF
+  BoxBorderColor #000000
+  GroupBorderColor #000000
+  GroupBackgroundColor #FFFFFF
+}
+
+title Рисунок 3.6 – Детекция слотов на кадре\n(основа функции 5; POST /api/detect)
+
+actor "Пользователь" as U
+participant "Map UI (app.js)" as UI
+participant "Backend API (server.py)" as API
+database "SQLite" as DB
+
+U -> UI : Страница «Мониторинг»\nзахват кадра, «Отправить»
+UI -> API : POST /api/detect\nmultipart: image
+activate API
+API -> API : YOLOv8-seg\nstable id, debounce
+API -> API : _update_latest\n(_last_slots,_last_ts)
+API -> DB : INSERT observations\n(фон)
+DB --> API : ok
+API --> UI : JSON (slots, counts, ts)
+deactivate API
+
+UI -> UI : drawAutoSlots()\nupdateStats()
+
+@enduml
+

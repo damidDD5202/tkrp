@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Рис. 2.3 — Администрирование (полная страница)</title>
+  <link rel="stylesheet" href="wireframe-common.css" />
+  <style>
+    .wide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 900px) { .wide-grid { grid-template-columns: 1fr; } }
+    .slot-map { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; margin-top: 10px; }
+    .cell {
+      aspect-ratio: 1; border-radius: 8px; border: 2px dashed #cbd5e1;
+      display: flex; align-items: center; justify-content: center; font-size: 10px;
+      color: #64748b;
+    }
+    .cell.off { border-style: solid; background: rgba(255,77,77,.12); border-color: #ef4444; color: #dc2626; }
+    .cell.hl { box-shadow: 0 0 0 2px #2563eb; }
+    .search-row { display: flex; gap: 8px; margin-top: 8px; }
+    .search-row .wf-input { flex: 1; margin: 0; }
+    .dash-box {
+      font-family: Consolas, monospace; font-size: 10px;
+      background: #f8fafc; padding: 10px; border-radius: 8px;
+      border: 1px solid #e2e6ed;
+      color: #475569; margin-top: 8px;
+    }
+    .support-layout { display: grid; grid-template-columns: 140px 1fr; gap: 10px; min-height: 100px; }
+    .thread { padding: 8px; border-radius: 8px; background: #f8fafc; border: 1px solid #e2e6ed; font-size: 11px; margin-bottom: 4px; }
+  </style>
+</head>
+<body class="wf-page">
+  <div class="wf-frame">
+    <aside class="wf-sidebar">
+      <div class="wf-brand"><div class="wf-brand-mark">PE</div><div class="wf-brand-text">Parking Eye</div></div>
+      <nav class="wf-nav">
+        <a href="fig2_4_dashboard.html"><span class="wf-nav-icon">⌂</span> Главная</a>
+        <a href="fig2_1_monitor.html"><span class="wf-nav-icon">▣</span> Мониторинг</a>
+        <a href="fig2_2_cabinet.html"><span class="wf-nav-icon">▤</span> Кабинет</a>
+        <a class="active" href="fig2_3_admin.html"><span class="wf-nav-icon">⚙</span> Админ</a>
+      </nav>
+      <div class="wf-user"><strong>admin</strong><span>admin · администратор</span></div>
+    </aside>
+    <div class="wf-main">
+      <header class="wf-header">
+        <h1>Администрирование</h1>
+        <p>Пользователи, брони и сводка</p>
+      </header>
+      <div class="wf-content">
+        <div class="wide-grid">
+          <div class="wf-card wf-highlight">
+            <div class="wf-card-title">Поиск по госномеру</div>
+            <p class="wf-muted">GET /api/admin/find-by-plate</p>
+            <div class="search-row">
+              <input class="wf-input" value="A123BC77" />
+              <span class="wf-btn primary">Найти</span>
+            </div>
+            <div class="dash-box">slot_6 · booked · ivan · до 18:30 · live_state: booked</div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-card-title">Сводка</div>
+            <div class="dash-box">{ slots: 12, free: 5, booked: 2, overrides: 2 }</div>
+          </div>
+        </div>
+
+        <div class="wf-card">
+          <div class="wf-card-title">Пользователи <span class="wf-tag-team">модуль команды</span></div>
+          <table class="wf-table">
+            <tr><th>login</th><th>роль</th><th>статус</th><th></th></tr>
+            <tr><td>ivan</td><td>user</td><td>active</td><td>блок</td></tr>
+            <tr><td>admin</td><td>admin</td><td>active</td><td>—</td></tr>
+          </table>
+          <p class="wf-muted" style="margin-top:8px">Форма «Создать пользователя»</p>
+        </div>
+
+        <div class="wf-card">
+          <div class="wf-card-title">Все брони <span class="wf-tag-team">модуль команды</span></div>
+          <table class="wf-table">
+            <tr><th>id</th><th>slot</th><th>plate</th><th>status</th></tr>
+            <tr><td>42</td><td>slot_6</td><td>A123BC77</td><td>active</td></tr>
+          </table>
+        </div>
+
+        <div class="wf-card wf-highlight">
+          <div class="wf-card-title">Статусы мест · админ-карта</div>
+          <p class="wf-muted">Клик — PUT /api/admin/slot-overrides/{slot_id}</p>
+          <div class="slot-map">
+            <div class="cell">1</div><div class="cell">2</div><div class="cell off">3✕</div><div class="cell">4</div>
+            <div class="cell">5</div><div class="cell hl">6★</div><div class="cell">7</div><div class="cell off">8✕</div>
+            <div class="cell">9</div><div class="cell">10</div><div class="cell">11</div><div class="cell">12</div>
+          </div>
+          <div class="dash-box">overrides: slot_3→closed · slot_8→repair</div>
+        </div>
+
+        <div class="wide-grid">
+          <div class="wf-card">
+            <div class="wf-card-title">Analytics <span class="wf-tag-team">модуль команды</span></div>
+            <div class="dash-box">JSON сводка</div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-card-title">Finance <span class="wf-tag-team">модуль команды</span></div>
+            <div class="dash-box">JSON финансы</div>
+          </div>
+        </div>
+
+        <div class="wf-card">
+          <div class="wf-card-title">Чат поддержки <span class="wf-tag-team">модуль команды</span></div>
+          <div class="support-layout">
+            <div><div class="thread">ivan (1)</div><div class="thread">maria</div></div>
+            <div class="wf-muted">Переписка · ответ администратора</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="wf-caption">Рисунок 2.3 – Структурная макета фрагмента «Администрирование» (для скриншота — верхняя и средняя часть)</p>
+</body>
+</html>

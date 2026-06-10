@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+.venv-gpu/
+.venv-pklot/
+
+# Local DB and runtime data
+parking.db
+*.db-journal
+
+# YOLO / training artifacts
+runs/
+*.pt
+!requirements.txt
+pklot_yolo_seg/
+train/
+valid/
+
+# Large local docs (optional copies)
+smart_parking_lab1_final_like_example.docx
+
+# Video and large media (keep in repo only if needed via Git LFS)
+*.mp4
+*.avi
+*.mov
+
+# Frames / snapshots (regenerate locally)
+frames/
+screen_frames/
+snapshots/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Env secrets
+.env
+.env.*
+!.env.example
+
+# Temp / extract
+reports/_lab*_template_extract.txt
+pz_template_extracted.txt
+scripts/_fix_*.py
+
+# Optional: large EA files (uncomment if repo should stay small)
+# reports/**/*.eapx

@@ -1,0 +1,41 @@
+@startuml fig3_7_seq_slots_map_ea_style
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam sequence {
+  ArrowColor #000000
+  LifeLineBorderColor #000000
+  LifeLineBackgroundColor #FFFFFF
+  ParticipantBorderColor #000000
+  ParticipantBackgroundColor #FFFFFF
+  ActorBorderColor #000000
+  ActorBackgroundColor #FFFFFF
+  BoxBorderColor #000000
+  GroupBorderColor #000000
+  GroupBackgroundColor #FFFFFF
+}
+
+title Рисунок 3.7 – Просмотр карты мест и «светофор»\n(функции 4–5; GET /api/parking/slots-map)
+
+actor "Пользователь" as U
+participant "Map UI (cabinet.js)" as UI
+participant "Backend API (server.py)" as API
+database "SQLite" as DB
+
+U -> UI : Открыть «Кабинет»\nблок «Карта мест»
+UI -> API : GET /api/parking/slots-map\n+ cookie
+activate API
+API -> API : require_login
+
+API -> DB : SELECT bookings\n(status='active', end_ts>now)\nSELECT slot_overrides
+DB --> API : Список
+
+API -> API : merge _last_slots\n+ booked + override
+API --> UI : JSON (slots, traffic)
+deactivate API
+
+UI -> UI : renderSlotMap()\nподсказки, bookable
+
+@enduml
+

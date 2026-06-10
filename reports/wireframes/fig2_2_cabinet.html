@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Рис. 2.2 — Личный кабинет (полная страница)</title>
+  <link rel="stylesheet" href="wireframe-common.css" />
+  <style>
+    .narrow { max-width: 640px; }
+    .slot-map { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 10px; }
+    .cell {
+      aspect-ratio: 1; border-radius: 10px; border: 2px solid;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600;
+    }
+    .cell.free { background: rgba(32,213,107,.15); border-color: #20d56b; color: #20d56b; }
+    .cell.busy { background: rgba(255,77,77,.15); border-color: #ff4d4d; color: #ff4d4d; }
+    .cell.booked { background: rgba(255,213,77,.15); border-color: #e6a800; color: #e6a800; }
+    .cell.closed { background: #f1f5f9; border-color: #94a3b8; color: #64748b; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .traffic-inline { display: flex; gap: 6px; align-items: center; margin-bottom: 10px; }
+    .bulb { width: 14px; height: 14px; border-radius: 50%; border: 1px solid #666; }
+    .bulb.g.on { background: #3c3; }
+  </style>
+</head>
+<body class="wf-page">
+  <div class="wf-frame">
+    <aside class="wf-sidebar">
+      <div class="wf-brand"><div class="wf-brand-mark">PE</div><div class="wf-brand-text">Parking Eye</div></div>
+      <nav class="wf-nav">
+        <a href="fig2_4_dashboard.html"><span class="wf-nav-icon">⌂</span> Главная</a>
+        <a href="fig2_1_monitor.html"><span class="wf-nav-icon">▣</span> Мониторинг</a>
+        <a class="active" href="fig2_2_cabinet.html"><span class="wf-nav-icon">▤</span> Кабинет</a>
+        <a href="fig2_3_admin.html"><span class="wf-nav-icon">⚙</span> Админ</a>
+      </nav>
+      <div class="wf-user"><strong>Иван</strong><span>user · ivan</span></div>
+    </aside>
+    <div class="wf-main">
+      <header class="wf-header">
+        <h1>Личный кабинет</h1>
+        <p>Бронирование парковочных мест</p>
+      </header>
+      <div class="wf-content narrow">
+        <div class="wf-card"><div class="wf-card-title">Привет, Иван</div><p class="wf-muted">Например slot_3</p></div>
+
+        <div class="wf-card">
+          <div class="wf-card-title">Баллы лояльности <span class="wf-tag-team">модуль команды</span></div>
+          <p class="wf-muted">Баланс: 120 баллов</p>
+        </div>
+
+        <div class="wf-card">
+          <div class="wf-card-title">Семейный аккаунт <span class="wf-tag-team">модуль команды</span></div>
+          <p class="wf-muted">Участники семьи · код приглашения</p>
+        </div>
+
+        <div class="wf-card wf-highlight">
+          <div class="wf-card-title">Карта мест <span class="wf-muted">GET /api/parking/slots-map</span></div>
+          <div class="traffic-inline">
+            <div class="bulb"></div><div class="bulb"></div><div class="bulb g on"></div>
+            <span class="wf-muted">светофор · 5/8 свободно</span>
+          </div>
+          <p class="wf-muted">Нажмите на свободное место для брони</p>
+          <div class="slot-map">
+            <div class="cell free">1</div><div class="cell busy">2</div><div class="cell free">3</div>
+            <div class="cell booked">4</div><div class="cell free">5</div><div class="cell busy">6</div>
+            <div class="cell free">7</div><div class="cell closed">8</div><div class="cell free">9</div>
+            <div class="cell busy">10</div><div class="cell free">11</div><div class="cell booked">12</div>
+          </div>
+        </div>
+
+        <div class="wf-card">
+          <div class="wf-card-title">Новая бронь <span class="wf-tag-team">связанный сценарий</span></div>
+          <div class="form-row">
+            <label class="wf-label">ID места<input class="wf-input" value="slot_3" readonly /></label>
+            <label class="wf-label">Госномер<input class="wf-input" value="A123BC77" /></label>
+          </div>
+          <label class="wf-label">Часы<input class="wf-input" value="3" /></label>
+          <span class="wf-btn primary" style="margin-top:12px">Забронировать</span>
+        </div>
+
+        <div class="wf-card">
+          <div class="wf-card-title">Мои брони</div>
+          <table class="wf-table">
+            <tr><th>slot</th><th>до</th><th>статус</th></tr>
+            <tr><td>slot_4</td><td>18:30</td><td>active</td></tr>
+          </table>
+        </div>
+
+        <div class="wf-card">
+          <div class="wf-card-title">История сессий <span class="wf-tag-team">модуль команды</span></div>
+          <p class="wf-muted">Таблица входов пользователя</p>
+        </div>
+
+        <div class="wf-card">
+          <div class="wf-card-title">Поддержка <span class="wf-tag-team">модуль команды</span></div>
+          <p class="wf-muted">Чат с администратором</p>
+        </div>
+
+        <div class="wf-card">
+          <div class="wf-card-title">Безопасность <span class="wf-tag-team">модуль команды</span></div>
+          <p class="wf-muted">Смена пароля</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="wf-caption">Рисунок 2.2 – Структурная макета фрагмента «Личный кабинет»: карта мест (для скриншота — только центральная часть)</p>
+</body>
+</html>

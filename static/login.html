@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#08080c" />
+    <title>Parking Eye</title>
+    <script src="/settings.js"></script>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="auth-page" data-i18n-title="title.login">
+    <header class="auth-header">
+      <a href="/login.html" class="auth-brand">
+        <span class="auth-brand-mark">PE</span>
+        <span class="auth-brand-name" data-i18n="app.name">Parking Eye</span>
+      </a>
+      <div id="authPrefs" class="auth-prefs"></div>
+    </header>
+    <main class="auth-main">
+      <div class="auth-card">
+        <h1 class="auth-title" data-i18n="auth.login_title">Вход в аккаунт</h1>
+        <p class="auth-subtitle" data-i18n="auth.login_sub">Умный мониторинг парковки</p>
+        <form id="formLogin" class="form-stack auth-form">
+          <label class="field">
+            <span data-i18n="auth.username">Логин</span>
+            <input id="inUser" name="username" autocomplete="username" required />
+          </label>
+          <label class="field">
+            <span data-i18n="auth.password">Пароль</span>
+            <div class="field-row">
+              <input id="inPass" name="password" type="password" autocomplete="current-password" required />
+              <button type="button" class="btn ghost field-toggle" id="togglePass" data-i18n="common.show_password">Показать</button>
+            </div>
+          </label>
+          <button type="submit" class="btn primary auth-submit" data-i18n="auth.login_btn">Войти</button>
+        </form>
+        <div id="loginErr" class="error-text hidden" aria-live="polite"></div>
+        <p class="auth-links">
+          <span data-i18n="auth.no_account">Нет аккаунта?</span>
+          <a href="/register.html" data-i18n="auth.register_link">Зарегистрироваться</a>
+        </p>
+      </div>
+    </main>
+    <script src="/ui.js"></script>
+    <script src="/auth.js"></script>
+    <script src="/login.js"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 2
+names: ['slot_free', 'slot_occupied']
+
+roboflow:
+  workspace: rolps-workspace
+  project: screen-parking
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/rolps-workspace/screen-parking/dataset/1

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#08080c" />
+    <title>Parking Eye</title>
+    <script src="/settings.js?pev=20260518k"></script>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="app-body page-monitor" data-i18n-title="title.monitor">
+    <div id="appShell"></div>
+
+    <div class="app-main">
+      <header class="page-header">
+        <div class="page-header-top">
+          <h1 class="page-title" data-i18n="monitor.title">Мониторинг парковки</h1>
+          <div class="mode-tabs" role="tablist" data-i18n-aria="monitor.mode_aria">
+            <a class="mode-tab" data-mode-tab="source" href="/?mode=source" data-i18n="monitor.mode_source">Источник</a>
+            <a class="mode-tab" data-mode-tab="client" href="/?mode=client" data-i18n="monitor.mode_client">Клиент</a>
+          </div>
+        </div>
+        <p class="page-lead" data-i18n="monitor.lead">Детекция мест в реальном времени</p>
+      </header>
+
+      <main class="monitor-layout">
+        <section class="monitor-stage-wrap">
+          <section class="stage stage--hero">
+            <video id="video" playsinline muted autoplay></video>
+            <img id="clientFrame" class="client-frame hidden" alt="Parking stream" />
+            <canvas id="overlay"></canvas>
+            <div id="cameraHint" class="camera-hint hidden">
+              <p data-i18n="monitor.camera_hint">Разрешите доступ к камере для съёмки парковки.</p>
+              <button type="button" id="btnStartCamera" class="btn primary" data-i18n="monitor.camera_start">Включить камеру</button>
+            </div>
+            <div id="modeBadge" class="mode-badge hidden"></div>
+          </section>
+        </section>
+
+        <aside class="monitor-sidebar">
+          <div id="monitorTraffic" class="monitor-traffic"></div>
+
+          <div class="stat-grid">
+            <div class="stat-card stat-card--free">
+              <span class="stat-card-label" data-i18n="monitor.stat_free">Свободно</span>
+              <span class="stat-card-value" id="free">0</span>
+            </div>
+            <div class="stat-card stat-card--busy">
+              <span class="stat-card-label" data-i18n="monitor.stat_busy">Занято</span>
+              <span class="stat-card-value" id="occupied">0</span>
+            </div>
+            <div class="stat-card stat-card--total">
+              <span class="stat-card-label" data-i18n="monitor.stat_total">Всего мест</span>
+              <span class="stat-card-value" id="total">0</span>
+            </div>
+          </div>
+
+          <section class="panel panel--actions">
+            <h2 class="panel-heading" data-i18n="monitor.actions">Действия</h2>
+            <div class="toolbar">
+              <button type="button" id="btnStartCameraToolbar" class="btn primary" data-i18n="monitor.camera_start">Включить камеру</button>
+              <button type="button" id="btnCapture" class="btn ghost" data-i18n="monitor.capture">Снять фото</button>
+              <button type="button" id="btnUpload" class="btn ghost" data-i18n="monitor.upload">Загрузить</button>
+              <input id="filePhoto" class="hidden" type="file" accept="image/*" />
+              <button type="button" id="btnCopyClientLink" class="btn ghost" data-i18n="monitor.copy_link">Ссылка клиенту</button>
+              <button type="button" id="btnSnapshot" class="btn ghost" data-i18n="monitor.snapshot">Снимок</button>
+              <button type="button" id="btnSettings" class="btn ghost" data-i18n="monitor.settings">Настройки</button>
+              <button type="button" id="btnResults" class="btn ghost" data-i18n="monitor.results">Сводка</button>
+              <button type="button" id="btnReset" class="btn danger btn-sm-toolbar" data-i18n="monitor.reset">Сброс</button>
+            </div>
+            <div id="statsLine" class="stats-line"></div>
+          </section>
+
+          <section id="vehBox" class="navbox"></section>
+
+          <p class="footnote" data-i18n="monitor.footnote">HTTPS для Safari</p>
+        </aside>
+
+        <section id="results" class="results results--panel hidden">
+          <div class="results-title" data-i18n="monitor.results_title">Сводка по местам</div>
+          <div class="results-body" id="resultsBody"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/auth.js?pev=20260518k"></script>
+    <script src="/ui.js?pev=20260518k"></script>
+    <script src="/app-shell.js?pev=20260518k"></script>
+    <script src="/pe-features.js?pev=20260518k"></script>
+    <script>
+      if (typeof I18n !== "undefined") I18n.apply(document);
+    </script>
+    <script src="/auth-guard.js?pev=20260518k" data-app="/app.js?pev=20260518k" data-page="monitor"></script>
+  </body>
+</html>

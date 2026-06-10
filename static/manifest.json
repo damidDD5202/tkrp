@@ -1,0 +1,10 @@
+{
+  "name": "Parking Eye",
+  "short_name": "ParkingEye",
+  "description": "Умный мониторинг парковки и бронирование мест",
+  "start_url": "/dashboard.html",
+  "display": "standalone",
+  "background_color": "#08080c",
+  "theme_color": "#08080c",
+  "icons": []
+}

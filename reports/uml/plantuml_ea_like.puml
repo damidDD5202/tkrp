@@ -1,0 +1,91 @@
+' Стиль, максимально близкий к «канцелярскому» экспорту (в духе Enterprise Architect):
+' белый фон, чёрные границы, Arial, без теней.
+' Подключать из той же папки: !include plantuml_ea_like.puml
+
+skinparam dpi 120
+skinparam shadowing false
+skinparam handwritten false
+skinparam hyperLinkUnderline false
+
+skinparam backgroundColor #FFFFFF
+skinparam padding 28
+skinparam margin 16
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam defaultFontStyle plain
+skinparam defaultFontColor #000000
+
+skinparam ArrowColor #000000
+skinparam ArrowThickness 1
+skinparam arrowFontColor #000000
+skinparam arrowFontSize 9
+
+skinparam titleFontName Arial
+skinparam titleFontSize 11
+skinparam titleFontStyle bold
+skinparam titleFontColor #000000
+
+skinparam stereotypeFontSize 9
+skinparam stereotypeFontColor #000000
+
+' Use Case
+skinparam actor {
+  FontColor #000000
+  BorderColor #000000
+}
+
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+' Sequence
+skinparam sequenceMessageAlign left
+
+skinparam sequence {
+  ArrowColor #000000
+  ArrowThickness 1
+  LifeLineBorderColor #000000
+  LifeLineBackgroundColor #FFFFFF
+  ParticipantBorderColor #000000
+  ParticipantBackgroundColor #FFFFFF
+  ParticipantFontColor #000000
+  ActorBorderColor #000000
+  ActorBackgroundColor #FFFFFF
+  ActorFontColor #000000
+  DividerBackgroundColor #FFFFFF
+  DividerBorderColor #000000
+  GroupBackgroundColor #FFFFFF
+  GroupBorderColor #000000
+  BoxBorderColor #000000
+}
+
+skinparam participant {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+skinparam database {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+skinparam ParticipantPadding 12
+skinparam BoxPadding 8
+
+' Заметки (как стикер в EA)
+skinparam note {
+  BackgroundColor #FFFACD
+  BorderColor #000000
+  FontColor #000000
+}

@@ -1,0 +1,59 @@
+@startuml fig3_9_seq_admin_override_ea_style
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam sequence {
+  ArrowColor #000000
+  LifeLineBorderColor #000000
+  LifeLineBackgroundColor #FFFFFF
+  ParticipantBorderColor #000000
+  ParticipantBackgroundColor #FFFFFF
+  ActorBorderColor #000000
+  ActorBackgroundColor #FFFFFF
+  BoxBorderColor #000000
+  GroupBorderColor #000000
+  GroupBackgroundColor #FFFFFF
+}
+
+title Рисунок 3.9 – Администрирование: статус места и аналитика\n(функции 9, 13–15)
+
+actor "Администратор" as A
+participant "Map UI (admin.js)" as UI
+participant "Backend API (server.py)" as API
+database "SQLite" as DB
+
+A -> UI : admin.html
+UI -> API : GET /api/admin/summary\n(функция 9)
+API --> UI : сводка
+
+A -> UI : клик по ячейке
+UI -> API : PUT /api/admin/slot-overrides/{slot_id}\n(status,note) + cookie
+activate API
+API -> API : require_admin
+
+API -> DB : UPSERT slot_overrides
+DB --> API : ok
+API --> UI : 200 OK\nJSON {ok, override}
+deactivate API
+
+UI -> API : GET /api/parking/slots-map\n+ cookie
+activate API
+API -> API : require_login
+API -> DB : SELECT bookings\nSELECT slot_overrides
+DB --> API : Список
+API --> UI : JSON (slots)
+deactivate API
+
+UI -> UI : renderAdminSlotMap()\nподсветка состояния
+
+UI -> API : GET analytics/occupancy\nGET finance/summary
+activate API
+API -> API : require_admin
+API -> DB : observations,\npayments
+DB --> API : отчёты
+API --> UI : JSON (функции 14, 15)
+deactivate API
+
+@enduml
+

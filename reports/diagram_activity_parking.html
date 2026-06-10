@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Рис. 1.1 — Диаграмма деятельности (вертикальная)</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      margin: 0;
+      padding: 20px 24px 40px;
+      background: #f5f6f8;
+      color: #1a1a1a;
+    }
+    h1 { font-size: 1.05rem; font-weight: 600; margin: 0 0 6px; }
+    .hint {
+      font-size: 0.85rem;
+      color: #555;
+      margin-bottom: 16px;
+      line-height: 1.45;
+    }
+    .diagram-wrap {
+      background: #fff;
+      border: 1px solid #bbb;
+      border-radius: 4px;
+      padding: 24px 16px;
+      overflow: auto;
+      min-width: 720px;
+    }
+    .caption {
+      margin-top: 14px;
+      text-align: center;
+      font-style: italic;
+      font-size: 0.95rem;
+    }
+    @media print {
+      body { background: #fff; padding: 8px; }
+      .hint { display: none; }
+      .diagram-wrap { border: none; min-width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Диаграмма деятельности (вертикальная)</h1>
+  <p class="hint">
+    Подсистема «Отображение свободных и занятых мест». Для Word: <kbd>Ctrl+P</kbd> → «Сохранить как PDF»
+    или скриншот <kbd>Win+Shift+S</kbd>. Масштаб в браузере: <kbd>Ctrl</kbd> + колёсико.
+  </p>
+
+  <div class="diagram-wrap">
+    <pre class="mermaid">
+flowchart TB
+  start(("Старт"))
+
+  load["Загрузка данных подсистемы:\nрезультаты детекции с камеры,\nактивные бронирования, slot_overrides"]
+
+  check{"Данные загружены\nкорректно?"}
+  err["Сообщение об ошибке,\nповтор запроса к API"]
+
+  show["Отображение:\nполигоны свободных/занятых на кадре камеры,\nкарта мест, счётчики"]
+
+  scenario{"Сценарий"}
+
+  %% --- ветка 1: мониторинг (как «рельеф») ---
+  c1["Получение кадра с камеры"]
+  c2["Детекция YOLOv8-seg на сервере"]
+  c3["Классификация:\nslot_free / slot_occupied"]
+  c4["Отрисовка полигонов на overlay\n(зелёный — свободно, красный — занято)"]
+  c5["Обновление счётчиков\nсвободно / занято / всего"]
+
+  %% --- ветка 2: карта мест ---
+  m1["Показать карту мест и статусы слотов"]
+  m2{"Действия\nпользователя?"}
+  m_view["Просмотр свободных\nи занятых мест"]
+  m_pick["Выбор свободного места"]
+  m_check["Проверка bookable(s)"]
+
+  %% --- ветка 3: статусы (как «дефекты») ---
+  d1["Показать карту с учётом\nручных статусов"]
+  d2{"Изменение\nстатуса места?"}
+  d3{"Роль:\nадминистратор?"}
+  d_edit["Установка статуса:\nзакрыто / ремонт / резерв"]
+  d_save["Сохранение в БД\n(slot_overrides)"]
+  d_skip["Только просмотр"]
+
+  %% --- ветка 4: сводка ---
+  s1["Агрегация: N свободных,\nзанятых, забронированных"]
+  s2["Расчёт индикатора загрузки\n(светофор)"]
+  s3["Вывод сводки пользователю"]
+
+  upd["Обновление карты мест,\noverlay камеры и сводных показателей"]
+
+  cont{"Продолжить\nработу?"}
+  endnode(("Завершение"))
+
+  %% основной поток сверху вниз
+  start --> load --> check
+  check -->|нет| err --> load
+  check -->|да| show --> scenario
+
+  %% подписи веток у ромба «Сценарий»
+  scenario -->|мониторинг\nс камеры| c1
+  scenario -->|карта мест| m1
+  scenario -->|статусы мест| d1
+  scenario -->|сводка| s1
+
+  c1 --> c2 --> c3 --> c4 --> c5 --> upd
+
+  m1 --> m2
+  m2 -->|просмотр| m_view --> upd
+  m2 -->|бронирование| m_pick --> m_check --> upd
+
+  d1 --> d2
+  d2 -->|нет| d_skip --> upd
+  d2 -->|да| d3
+  d3 -->|да| d_edit --> d_save --> upd
+  d3 -->|нет| d_skip
+
+  s1 --> s2 --> s3 --> upd
+
+  upd --> cont
+  cont -->|да| scenario
+  cont -->|нет| endnode
+
+  classDef startEnd fill:#e8f4ea,stroke:#2d6a3e,stroke-width:2px
+  classDef action fill:#ffffff,stroke:#333333,stroke-width:1px
+  classDef decision fill:#fff8e6,stroke:#b8860b,stroke-width:2px
+
+  class start,endnode startEnd
+  class load,err,show,c1,c2,c3,c4,c5,m1,m_view,m_pick,m_check,d1,d_edit,d_save,d_skip,s1,s2,s3,upd action
+  class check,scenario,m2,d2,d3,cont decision
+    </pre>
+  </div>
+
+  <p class="caption">
+    Рисунок 1.1 — Диаграмма деятельности подсистемы «Отображение свободных и занятых мест»
+  </p>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: "neutral",
+      flowchart: {
+        useMaxWidth: true,
+        htmlLabels: true,
+        curve: "basis",
+        padding: 14,
+        nodeSpacing: 28,
+        rankSpacing: 42,
+        diagramPadding: 16
+      },
+      securityLevel: "loose"
+    });
+  </script>
+</body>
+</html>

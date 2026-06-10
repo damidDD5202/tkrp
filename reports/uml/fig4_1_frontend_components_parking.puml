@@ -1,0 +1,65 @@
+@startuml fig4_1_frontend_components_parking
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowColor #000000
+skinparam rectangleBorderColor #000000
+skinparam rectangleFontColor #000000
+
+title Рисунок 4.1 – Диаграмма компонентов пользовательского интерфейса (Parking Eye)
+
+rectangle "Пользователь\n(гость / user / admin)" as user
+rectangle "styles.css\nоформление панелей" as styles
+rectangle "settings.js\nI18n, темы, тексты" as settings
+rectangle "app-shell.js\nнавигация, chrome" as shell
+rectangle "auth.js\nsession, Auth.fetchJson" as auth
+
+rectangle "index.html\nстраница мониторинга" as index
+rectangle "cabinet.html\nличный кабинет" as cabinet
+rectangle "admin.html\nадмин-панель" as admin
+
+rectangle "app.js\nvideo, overlay, POST /api/detect" as app
+rectangle "pe-features.js\nslot map, traffic widget" as pe
+rectangle "cabinet.js\nбронирование, карта мест" as cabjs
+rectangle "admin.js\noverrides, find-by-plate" as adminjs
+rectangle "support-chat.js\nчат поддержки" as chat
+
+rectangle "REST API\n(Backend)" as api
+
+user --> index
+user --> cabinet
+user --> admin
+
+styles --> index
+styles --> cabinet
+styles --> admin
+
+settings --> app
+settings --> pe
+settings --> cabjs
+settings --> adminjs
+
+shell --> index
+shell --> cabinet
+shell --> admin
+
+auth --> cabjs : cookie session
+auth --> adminjs : cookie session
+auth --> chat : cookie session
+
+index --> app
+cabinet --> pe
+cabinet --> cabjs
+admin --> pe
+admin --> adminjs
+admin --> chat
+
+app --> api : /api/detect\n/api/parking/state\n/api/parking/traffic
+cabjs --> api : /api/parking/slots-map\n/api/me/bookings
+adminjs --> api : /api/admin/slot-overrides\n/api/admin/find-by-plate
+chat --> api : /api/*/support/*
+pe --> api : /api/parking/slots-map\n/api/parking/traffic
+
+@enduml
+

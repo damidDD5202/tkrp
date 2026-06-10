@@ -1,0 +1,47 @@
+@startuml fig4_2_backend_components_parking
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowColor #000000
+skinparam rectangleBorderColor #000000
+skinparam rectangleFontColor #000000
+
+title Рисунок 4.2 – Диаграмма компонентов серверной части (Parking Eye)
+
+rectangle "frontend\nHTTP JSON" as fe
+
+rectangle "FastAPI (server.py)\nприём HTTP-запроса" as fastapi
+
+rectangle "auth middleware\nrequire_login / require_admin\ncookie pe_session" as mw_auth
+
+rectangle "parking API\nGET /api/parking/slots-map\nGET /api/parking/traffic" as api_parking
+rectangle "detect pipeline\nPOST /api/detect\n_update_latest, _last_slots" as api_detect
+rectangle "bookings API\nGET/POST/DELETE/PATCH\n/api/me/bookings" as api_booking
+rectangle "admin API\nPUT /api/admin/slot-overrides/{slot_id}\nGET /api/admin/find-by-plate" as api_admin
+
+rectangle "Db access\n_db(), _db_lock\nsqlite3.Row" as db_access
+database "SQLite parking.db\nusers, sessions, bookings,\nslot_overrides, observations" as db
+
+fe --> fastapi
+
+fastapi --> mw_auth
+mw_auth --> api_parking
+mw_auth --> api_booking
+mw_auth --> api_admin
+
+fastapi --> api_detect
+
+api_parking --> db_access
+api_booking --> db_access
+api_admin --> db_access
+api_detect --> db_access : observations (async)
+
+db_access --> db
+
+note right of api_detect
+  Live-детекция хранится\n  в памяти (_last_slots)\n  и объединяется с БД\n  в _parking_slots_map_payload
+end note
+
+@enduml
+

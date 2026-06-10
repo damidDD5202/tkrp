@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#08080c" />
+    <title>Parking Eye</title>
+    <script src="/settings.js"></script>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="app-body page-dashboard" data-i18n-title="title.dashboard">
+    <div id="appShell"></div>
+    <div class="app-main">
+      <header class="page-header page-header--compact">
+        <h1 class="page-title" data-i18n="dash.welcome">Добро пожаловать</h1>
+        <p class="page-lead" id="welcomeLead" data-i18n="common.loading">Загрузка…</p>
+      </header>
+      <main class="dashboard-grid" id="dashboardRoot">
+        <div class="dash-skeleton panel card" aria-hidden="true"></div>
+        <div class="dash-skeleton panel card" aria-hidden="true"></div>
+        <div class="dash-skeleton panel card" aria-hidden="true"></div>
+      </main>
+    </div>
+    <script src="/auth.js"></script>
+    <script src="/ui.js"></script>
+    <script src="/app-shell.js"></script>
+    <script src="/pe-features.js"></script>
+    <script src="/dashboard.js"></script>
+  </body>
+</html>

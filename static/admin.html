@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Parking Eye</title>
+    <script src="/settings.js?pev=20260525c"></script>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="app-body page-admin" data-i18n-title="title.admin">
+    <div id="appShell"></div>
+
+    <div class="app-main">
+      <header class="page-header page-header--compact">
+        <h1 class="page-title" data-i18n="admin.title">Администрирование</h1>
+        <p class="page-lead" data-i18n="admin.lead">Пользователи, брони и сводка</p>
+      </header>
+
+      <main class="page-content-wide">
+        <div id="adminPanel" class="hidden">
+          <section class="panel card">
+            <div class="card-title" data-i18n="admin.find_plate">Поиск по госномеру</div>
+            <form id="formFindPlate" class="form-stack form-inline">
+              <input id="findPlateIn" type="search" autocomplete="off" maxlength="32" data-i18n-placeholder="admin.find_plate_ph" />
+              <button type="submit" class="btn success" data-i18n="admin.find_plate_btn">Найти</button>
+            </form>
+            <p class="small muted" data-i18n="admin.find_plate_hint">По активной брони с указанным номером.</p>
+            <div id="findPlateResult" class="admin-dash admin-dash--compact"></div>
+          </section>
+
+          <section class="panel card">
+            <div class="card-title" data-i18n="admin.summary">Сводка</div>
+            <div id="summaryJson" class="admin-dash"></div>
+            <div class="small muted" data-i18n="admin.summary_hint">Подсказка по слотам</div>
+          </section>
+
+          <section class="panel card">
+            <div class="card-title" data-i18n="admin.users">Пользователи</div>
+            <div id="usersWrap" class="table-wrap"></div>
+            <div class="divider"></div>
+            <div class="card-sub" data-i18n="admin.create_user">Создать пользователя</div>
+            <form id="formNewUser" class="form-stack form-inline">
+              <input id="nuUser" data-i18n-placeholder="admin.ph_login" maxlength="40" />
+              <input id="nuPass" type="password" data-i18n-placeholder="admin.ph_password" />
+              <input id="nuName" data-i18n-placeholder="admin.ph_name" maxlength="80" />
+              <select id="nuRole">
+                <option value="user">user</option>
+                <option value="admin">admin</option>
+              </select>
+              <button type="submit" class="btn success" data-i18n="admin.create_btn">Создать</button>
+            </form>
+            <div id="newUserMsg" class="small"></div>
+          </section>
+
+          <section class="panel card">
+            <div class="card-title" data-i18n="admin.all_bookings">Все брони</div>
+            <div id="bookingsWrap" class="table-wrap"></div>
+          </section>
+
+          <section class="panel card">
+            <div class="card-title" data-i18n="admin.slots">Статусы мест</div>
+            <p class="small muted" data-i18n="admin.slots_map_hint">Клик по ячейке — отключить или снова включить место.</p>
+            <div id="adminSlotMap" class="slot-map-host"></div>
+            <div id="slotOverridesList" class="admin-dash admin-dash--compact"></div>
+          </section>
+
+          <section class="panel card">
+            <div class="card-title" data-i18n="admin.analytics">ANALYTICS</div>
+            <div id="analyticsJson" class="admin-dash"></div>
+          </section>
+
+          <section class="panel card">
+            <div class="card-title" data-i18n="admin.finance">FINANCE</div>
+            <div id="financeJson" class="admin-dash"></div>
+          </section>
+
+          <section class="panel card">
+            <div class="card-title" data-i18n="support.admin_title">Чат поддержки</div>
+            <div class="support-chat__admin-layout">
+              <div id="supportThreads" class="support-chat__threads-wrap"></div>
+              <div class="support-chat__main">
+                <p id="supportThreadTitle" class="support-chat__title small muted" data-i18n="support.pick_user">Выберите пользователя слева</p>
+                <div id="supportAdminLog" class="support-chat__log" role="log" aria-live="polite"></div>
+                <form id="formSupportAdmin" class="support-chat__form">
+                  <input id="supportAdminInput" type="text" maxlength="2000" autocomplete="off" data-i18n-placeholder="support.placeholder" />
+                  <button type="submit" class="btn primary" data-i18n="support.send">Отправить</button>
+                </form>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div id="forbiddenHint" class="panel card hidden">
+          <div class="card-title" data-i18n="admin.forbidden_title">Нужны права администратора</div>
+          <p class="small"><span data-i18n="admin.forbidden_text">Вы вошли как обычный пользователь.</span> <a href="/cabinet.html" data-i18n="admin.go_cabinet">Перейти в кабинет</a></p>
+        </div>
+      </main>
+    </div>
+
+    <script src="/auth.js?pev=20260525c"></script>
+    <script src="/ui.js?pev=20260525c"></script>
+    <script src="/app-shell.js?pev=20260525c"></script>
+    <script src="/pe-features.js?pev=20260525c"></script>
+    <script src="/support-chat.js?pev=20260525c"></script>
+    <script src="/admin.js?pev=20260525c"></script>
+  </body>
+</html>
