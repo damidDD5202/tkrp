@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Аббасов Дамад Надирович (Damad Abbasov)
+# SPDX-License-Identifier: LicenseRef-ParkingEye-Freeware-EULA
+# Parking Eye (TKRP2) — бесплатно для личного и учебного использования.
+# Изменение и коммерческое использование без согласия автора запрещены, см. LICENSE.
+
 import io
 import math
 import os
